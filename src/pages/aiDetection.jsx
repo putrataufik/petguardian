@@ -1,48 +1,124 @@
-import React from "react";
+import React, { useState } from "react";
 import { useAuthUser, useLogout } from "../hooks/authHooks";
 import { useNavigate } from "react-router-dom";
+import burgerMenu from "../assets/burgerMenu.png";
+import iconProfile from "../assets/iconProfile.png";
+import uploadImage from "../assets/uploadImagge.png";
 
 const AiDetection = () => {
   const user = useAuthUser(); // Custom hook untuk mendapatkan user
   const logout = useLogout(); // Custom hook untuk handle logout
   const navigate = useNavigate();
-  console.log(user);
+
+  const [selectedFile, setSelectedFile] = useState(null); // State untuk menyimpan file yang dipilih
+  const [previewImage, setPreviewImage] = useState(null); // State untuk menyimpan URL preview gambar
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      setSelectedFile(file);
+      setPreviewImage(URL.createObjectURL(file)); // Membuat URL sementara untuk preview gambar
+    }
+  };
+
+  const handleDragOver = (event) => {
+    event.preventDefault();
+  };
+
+  const handleDrop = (event) => {
+    event.preventDefault();
+    const file = event.dataTransfer.files[0];
+    if (file) {
+      setSelectedFile(file);
+      setPreviewImage(URL.createObjectURL(file)); // Membuat URL sementara untuk preview gambar
+    }
+  };
+
   return (
-    <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4">AI Detection</h1>
-      {user ? (
-        <div>
-          <p className="text-green-600 mb-4">
-            Selamat datang, <strong>{user.displayName}</strong>!
-          </p>
+    <div className="min-h-screen bg-gray-100 p-6 flex flex-col items-center">
+      {/* Header */}
+      <div className="flex justify-between w-full items-center">
+        <img src={burgerMenu} alt="Menu" className="w-8 h-8" />
+        {user ? (
           <img
             src={user.photoURL}
             alt="User Profile"
-            className="w-16 h-16 rounded-full mr-4"
+            className="w-10 h-10 rounded-full"
           />
-          <button
-            onClick={logout}
-            className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 mr-2"
-          >
-            Log Out
-          </button>
-          <button
-            onClick={() => navigate("/schedule")}
-            className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
-          >
-            Go to Profile
-          </button>
-        </div>
-      ) : (
-        <div>
-          <p className="text-red-600">Belum login.</p>
-          <button
+        ) : (
+          <img
+            src={iconProfile}
+            alt="User Profile"
+            className="w-10 h-10"
             onClick={() => navigate("/signin")}
-            className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
-          >
-            Go signin
-          </button>
+          />
+        )}
+      </div>
+
+      {/* Title */}
+      <h1 className="text-2xl font-bold text-center mt-6">
+        Get to know your pet with{" "}
+        <span className="text-pink-500">Petguard</span>
+      </h1>
+
+      {/* Drag and Drop Box */}
+      <div
+        className="border-2 border-dashed border-gray-400 rounded-lg p-6 mt-8 flex flex-col items-center w-80 relative"
+        onDragOver={handleDragOver}
+        onDrop={handleDrop}
+      >
+        <img src={uploadImage} alt="User Profile" className="w-10 h-10 mb-4" />
+        <p className="text-gray-600">Drop Your .png or .jpg file here!</p>
+        <p className="text-gray-400 text-sm mt-1">Max 5mb each.</p>
+        <input
+          type="file"
+          accept="image/png, image/jpeg"
+          onChange={handleFileChange}
+          className="absolute w-full h-full opacity-0 cursor-pointer"
+        />
+      </div>
+
+      {/* Preview Image */}
+      {previewImage && (
+        <div className="mt-6">
+          <div className="flex justify-between items-center">
+            <h2 className="text-lg font-semibold mb-2">Preview:</h2>
+            <button
+              onClick={() => setPreviewImage(null) && setSelectedFile(null)} // Menghapus gambar
+              className="text-red-500 font-semibold hover:underline"
+            >
+              X
+            </button>
+          </div>
+          <img
+            src={previewImage}
+            alt="Preview"
+            className="w-64 h-64 object-cover rounded-lg border border-gray-300"
+          />
         </div>
+      )}
+
+      {/* Buttons */}
+      <div className="flex flex-col items-center mt-8 gap-4 w-full">
+        <button className="bg-black text-white py-2 px-6 rounded hover:bg-gray-800 w-64 h-12">
+          Identify Pet Breed
+        </button>
+        <button className="bg-pink-500 text-white py-2 px-6 rounded hover:bg-pink-600 w-64 h-12">
+          Check for Health Issues
+        </button>
+        <button className="bg-gray-300 text-gray-600 py-2 px-6 rounded cursor-not-allowed w-64 h-12">
+          Let's Grooming
+        </button>
+      </div>
+
+      {/* Logout */}
+      {user && (
+        <button
+          onClick={logout}
+          className="mt-8 bg-red-500 text-white py-2 px-6 rounded hover:bg-red-600"
+        >
+          Log Out
+        </button>
       )}
     </div>
   );
