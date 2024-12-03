@@ -47,7 +47,7 @@ const AiDetection = () => {
       console.warn("No file selected for Let's Grooming.");
     }
   };
-
+//cobaa
   return (
     <div className="min-h-screen bg-gray-100 p-6 flex flex-col items-center">
       {/* Header */}
