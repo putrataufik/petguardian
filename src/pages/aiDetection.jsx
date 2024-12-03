@@ -7,7 +7,6 @@ import uploadImage from "../assets/uploadImagge.png";
 const AiDetection = () => {
   const user = useAuthUser(); // Custom hook untuk mendapatkan user
   const logout = useLogout(); // Custom hook untuk handle logout
-  //sdasda
   const navigate = useNavigate();
 
   const [selectedFile, setSelectedFile] = useState(null); // State untuk menyimpan file yang dipilih
@@ -59,7 +58,9 @@ const AiDetection = () => {
             src={user.photoURL}
             alt="User Profile"
             className="w-10 h-10 rounded-full"
-            onClick={() => navigate("/petprofile")}
+            onClick={() => {
+              navigate("/userProfile");
+            }}
           />
         )}
       </div>
@@ -108,25 +109,19 @@ const AiDetection = () => {
       )}
 
       {/* Buttons */}
-
-      <div className="flex flex-row items-center justify-center mt-4 gap-4 w-full">
-        <button className="bg-black text-white py-3 px-4 rounded hover:bg-gray-800 w-full md:w-64 h-16 text-base font-bold">
+      <div className="mt-8 flex flex-col space-y-4 items-center">
+        <button
+          onClick={handleIdentifyBreed}
+          className="bg-black text-white py-2 px-6 rounded hover:bg-gray-800 w-64"
+        >
           Identify Pet Breed
         </button>
-        <button className="bg-pink-500 text-white py-3 px-4 rounded hover:bg-pink-600 w-full md:w-64 h-16 text-base font-bold">
+        <button
+          onClick={handleCheckHealth}
+          className="bg-pink-500 text-white py-2 px-6 rounded hover:bg-pink-600 w-64"
+        >
           Check for Health Issues
         </button>
-      </div>
-
-      <div className="flex flex-row items-center justify-center mt-8 w-50">
-        <button className="bg-gray-300 text-gray-600 py-3 px-4 rounded cursor-not-allowed w-full md:w-64 h-14 text-base font-bold">
-          Let's Grooming
-        </button>
-      </div>
-
-
-      {/* Logout */}
-      {user && (
         <button
           onClick={handleGrooming}
           className="bg-gray-300 text-gray-600 py-2 px-6 rounded cursor-not-allowed w-64"
