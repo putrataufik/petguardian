@@ -50,7 +50,7 @@ const AiDetection = () => {
             src={iconProfile}
             alt="User Profile"
             className="w-10 h-10"
-            onClick={() => navigate("/petProfile")}
+            onClick={() => navigate("/signin")}
           />
         )}
       </div>
