@@ -8,6 +8,7 @@ import uploadImage from "../assets/uploadImagge.png";
 const AiDetection = () => {
   const user = useAuthUser(); // Custom hook untuk mendapatkan user
   const logout = useLogout(); // Custom hook untuk handle logout
+  //sdasda
   const navigate = useNavigate();
 
   const [selectedFile, setSelectedFile] = useState(null); // State untuk menyimpan file yang dipilih
