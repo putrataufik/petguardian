@@ -49,10 +49,10 @@ function SignIn() {
         </svg>
       </button>
 
-      <h1 className="text-3xl font-bold text-center mb-20">PetGuardian</h1>
+      <h1 className="text-3xl font-bold text-center mb-7">PetGuardian</h1>
 
       <div className="bg-white p-8 rounded-lg shadow-lg w-96">
-        <p className="text-gray-600 text-sm text-start font-bold">Login to your Account</p>
+        <p className="text-gray-600 text-sm text-start font-bold mb-4">Login to your Account</p>
         {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
 
         <input
