@@ -36,5 +36,5 @@ Currently, two official plugins are available:
 
 - Cara run "npm run dev" run di pc/laptop
          "npm run dev -- --host" untuk buka di HP (Harus 1 jaringan wifi dengan pc/laptop) **fase development pakai ini saja**
-         "npm run build" ini untuk production
-         "npm run preview -- --host" untuk install aplikasi ke hp (Harus 1 jaringan wifi dengan pc/laptop)
+         "npm run build" ini untuk production **Kalau sudah selesai baru pake ini**
+         "npm run preview -- --host" untuk install aplikasi ke hp **(Harus 1 jaringan wifi dengan pc/laptop)**

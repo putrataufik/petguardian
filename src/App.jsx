@@ -6,7 +6,7 @@ import SignUp from "./pages/signUp";
 import PetProfile from "./pages/petProfile";
 function App() {
   return (
-    //
+    // Baca README.md untuk memudahkan pekerjaan
     <Routes>
     <Route path="/" element={<AiDetection />} />
     <Route path="/signin" element={<SignIn />} />
