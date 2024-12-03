@@ -50,7 +50,7 @@ const AiDetection = () => {
             src={iconProfile}
             alt="User Profile"
             className="w-10 h-10"
-            onClick={() => navigate("/signin")}
+            onClick={() => navigate("/petProfile")}
           />
         )}
       </div>
@@ -100,19 +100,19 @@ const AiDetection = () => {
 
       {/* Buttons */}
       <div className="flex flex-row items-center justify-center mt-4 gap-4 w-full">
-  <button className="bg-black text-white py-3 px-4 rounded hover:bg-gray-800 w-full md:w-64 h-16 text-base font-bold">
-    Identify Pet Breed
-  </button>
-  <button className="bg-pink-500 text-white py-3 px-4 rounded hover:bg-pink-600 w-full md:w-64 h-16 text-base font-bold">
-    Check for Health Issues
-  </button>
-</div>
+        <button className="bg-black text-white py-3 px-4 rounded hover:bg-gray-800 w-full md:w-64 h-16 text-base font-bold">
+          Identify Pet Breed
+        </button>
+        <button className="bg-pink-500 text-white py-3 px-4 rounded hover:bg-pink-600 w-full md:w-64 h-16 text-base font-bold">
+          Check for Health Issues
+        </button>
+      </div>
 
-<div className="flex flex-row items-center justify-center mt-8 w-50">
-  <button className="bg-gray-300 text-gray-600 py-3 px-4 rounded cursor-not-allowed w-full md:w-64 h-14 text-base font-bold">
-    Let's Grooming
-  </button>
-</div>
+      <div className="flex flex-row items-center justify-center mt-8 w-50">
+        <button className="bg-gray-300 text-gray-600 py-3 px-4 rounded cursor-not-allowed w-full md:w-64 h-14 text-base font-bold">
+          Let's Grooming
+        </button>
+      </div>
 
 
       {/* Logout */}
