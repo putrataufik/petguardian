@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { useAuthUser, useLogout } from "../hooks/authHooks";
 import { useNavigate } from "react-router-dom";
-import BurgerMenu from "../components/burgerMenu"; // Import BurgerMenu
+import burgerMenu from "../assets/burgerMenu.png";
+import iconProfile from "../assets/iconProfile.png";
 import uploadImage from "../assets/uploadImagge.png";
 
 const AiDetection = () => {
@@ -9,9 +10,10 @@ const AiDetection = () => {
   const logout = useLogout(); // Custom hook untuk handle logout
   const navigate = useNavigate();
 
-  const [selectedFile, setSelectedFile] = useState(null); // State untuk menyimpan file yang dipilih
-  const [previewImage, setPreviewImage] = useState(null); // State untuk menyimpan URL preview gambar
+  const [selectedFile, setSelectedFile] = useState(null); // Untuk menyimpan file
+  const [previewImage, setPreviewImage] = useState(null); // Untuk menyimpan URL preview
 
+  // Fungsi untuk menangani perubahan file
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -24,6 +26,7 @@ const AiDetection = () => {
     }
   };
 
+  // Fungsi untuk tombol Identify Pet Breed
   const handleIdentifyBreed = () => {
     if (selectedFile) {
       console.log("Identify Pet Breed:", selectedFile); // Log file
@@ -32,6 +35,7 @@ const AiDetection = () => {
     }
   };
 
+  // Fungsi untuk tombol Check for Health Issues
   const handleCheckHealth = () => {
     if (selectedFile) {
       console.log("Check for Health Issues:", selectedFile); // Log file
@@ -40,6 +44,7 @@ const AiDetection = () => {
     }
   };
 
+  // Fungsi untuk tombol Let's Grooming
   const handleGrooming = () => {
     if (selectedFile) {
       console.log("Let's Grooming:", selectedFile); // Log file
@@ -49,40 +54,42 @@ const AiDetection = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 p-6 flex flex-col items-center">
+    <div className="p-4">
       {/* Header */}
-      <div className="flex justify-between w-full items-center">
-        <BurgerMenu user={user} logout={logout} />
-        {user && (
-          <img
-            src={user.photoURL}
-            alt="User Profile"
-            className="w-10 h-10 rounded-full"
-          />
-        )}
+      <div className="flex justify-between items-center">
+        <button className="text-black text-2xl font-bold">☰</button>
+        <button className="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center">
+          <img src={iconProfile} alt="" />
+        </button>
       </div>
 
-      {/* Rest of the page */}
-      <h1 className="text-2xl font-bold text-center mt-6">
-        Get to know your pet with{" "}
-        <span className="text-pink-500">Petguard</span>
-      </h1>
+      {/* Judul */}
+      <div className="text-center mt-6">
+        <h1 className="text-2xl font-bold">
+          Get to know your pet with <span className="text-pink-500">Petguard</span>
+        </h1>
+      </div>
 
-      {/* Drag and Drop Box */}
-      <div
-        className="border-2 border-dashed border-gray-400 rounded-lg p-6 mt-8 flex flex-col items-center w-80 relative"
-      >
-        <img src={uploadImage} alt="Upload" className="w-10 h-10 mb-4" />
-        <p className="text-gray-600">Drop Your .png or .jpg file here!</p>
-        <p className="text-gray-400 text-sm mt-1">Max 5mb each.</p>
+      {/* Upload Area */}
+      <div className="mt-8 flex flex-col items-center">
+        <label
+          htmlFor="fileUpload"
+          className="w-64 h-32 border-2 border-dashed border-gray-400 rounded-lg flex flex-col items-center justify-center cursor-pointer hover:bg-gray-50"
+        >
+          <span className="text-gray-600">📤</span>
+          <span className="text-sm text-gray-500">Drop your .png or .jpg file here!</span>
+          <span className="text-xs text-gray-400">Max 5Mb each</span>
+        </label>
         <input
           type="file"
-          accept="image/png, image/jpeg"
+          id="fileUpload"
+          accept="image/*"
           onChange={handleFileChange}
-          className="absolute w-full h-full opacity-0 cursor-pointer"
+          className="hidden"
         />
       </div>
 
+      {/* Preview Gambar */}
       {previewImage && (
         <div className="mt-6">
           <div className="flex justify-between items-center">
@@ -105,7 +112,7 @@ const AiDetection = () => {
         </div>
       )}
 
-      {/* Buttons */}
+      {/* Tombol Aksi */}
       <div className="mt-8 flex flex-col space-y-4 items-center">
         <button
           onClick={handleIdentifyBreed}
