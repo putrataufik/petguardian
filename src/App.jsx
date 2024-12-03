@@ -5,7 +5,7 @@ import Schedule from "./pages/schedule";
 import SignUp from "./pages/signUp";
 function App() {
   return (
-    //
+    // Baca README.md untuk memudahkan pekerjaan
     <Routes>
       <Route path="/" element={<AiDetection/>} />
       <Route path="/signin" element={<SignIn />} />
