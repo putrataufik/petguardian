@@ -11,7 +11,7 @@ const PetProfile = () => {
 
   // Fungsi untuk menangani navigasi saat div diklik
   const handleCardClick = () => {
-    navigate("/listpetprofile"); 
+    navigate("/detailpetprofile"); 
   };
 
   return (
