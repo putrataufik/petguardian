@@ -1,137 +1,73 @@
-import React, { useState } from "react";
+import React from 'react';
+import { useAuthUser, useLogout } from "../hooks/authHooks";
+import { useNavigate } from "react-router-dom"; // Tambahkan useNavigate untuk navigasi
+import BurgerMenu from '../components/burgerMenu';
+import fotokucing from '../assets/kucing.png';
 
-function PetProfile() {
-  const [profile, setProfile] = useState({
-    photo: "https://via.placeholder.com/150",
-    name: "John Doe",
-    gender: "Male",
-    aboutMe: "I love pets and enjoy taking care of them.",
-    location: "New York",
-    contact: "johndoe@example.com",
-  });
+const PetProfile = () => {
+  const user = useAuthUser(); // Custom hook untuk mendapatkan user
+  const logout = useLogout(); // Custom hook untuk handle logout
+  const navigate = useNavigate(); // Hook untuk navigasi
 
-  const [isEditing, setIsEditing] = useState(false);
-
-  const handlePhotoChange = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setProfile((prev) => ({ ...prev, photo: reader.result }));
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    setProfile((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const toggleEditing = () => {
-    setIsEditing((prev) => !prev);
+  // Fungsi untuk menangani navigasi saat div diklik
+  const handleCardClick = () => {
+    navigate("/listpetprofile"); 
   };
 
   return (
-    <div className="max-w-2xl mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
-      <div className="flex flex-col items-center">
-        <div className="relative w-32 h-32">
+    <div className="min-h-screen bg-gray-100 p-6 flex flex-col items-center">
+      {/* Header */}
+      <div className="flex justify-between w-full items-center">
+        <BurgerMenu user={user} logout={logout} />
+        {user && (
           <img
-            src={profile.photo}
-            alt="Profile"
-            className="w-full h-full object-cover rounded-full border-2 border-gray-300"
+            src={user.photoURL}
+            alt="User Profile"
+            className="w-10 h-10 rounded-full"
           />
-          <label className="absolute bottom-0 right-0 bg-rose-500 text-white p-1 rounded-full cursor-pointer">
-            <input
-              type="file"
-              accept="image/*"
-              className="hidden"
-              onChange={handlePhotoChange}
-            />
-            ✎
-          </label>
+        )}
+      </div>
+
+      {/* Title */}
+      <h1 className="text-2xl font-bold mt-6">Your Pets</h1>
+
+      {/* Pet Card 1 */}
+      <div 
+        onClick={handleCardClick} // Menambahkan event onClick
+        className="mt-6 w-full max-w-md flex items-center bg-black rounded-lg overflow-hidden cursor-pointer"
+      >
+        <img
+          src={fotokucing}
+          alt="Pet"
+          className="w-1/3 object-cover"
+        />
+        <div className="p-4 flex-grow text-white">
+          <div className="flex items-center space-x-2">
+            <h2 className="text-lg font-bold">Noozy</h2>
+            <span className="text-pink-400">♀</span>
+          </div>
         </div>
-
-        {isEditing ? (
-          <input
-            type="text"
-            name="name"
-            value={profile.name}
-            onChange={handleInputChange}
-            className="mt-4 text-xl font-bold border rounded px-2 py-1"
-          />
-        ) : (
-          <h1 className="mt-4 text-xl font-bold">{profile.name}</h1>
-        )}
-
-        {isEditing ? (
-          <select
-            name="gender"
-            value={profile.gender}
-            onChange={handleInputChange}
-            className="text-gray-600 border rounded px-2 py-1 mt-2"
-          >
-           <option value="Male">♂️ Male</option>
-           <option value="Female">♀️ Female</option>
-            
-          </select>
-        ) : (
-          <p className="text-gray-600">{profile.gender}</p>
-        )}
       </div>
 
-      <div className="mt-6">
-        <h2 className="text-lg font-semibold text-gray-700">About Me</h2>
-        {isEditing ? (
-          <textarea
-            name="aboutMe"
-            value={profile.aboutMe}
-            onChange={handleInputChange}
-            className="w-full border rounded px-2 py-1 mt-2"
-          />
-        ) : (
-          <p className="mt-2 text-gray-600">{profile.aboutMe}</p>
-        )}
-
-        <h2 className="text-lg font-semibold text-gray-700 mt-4">Location</h2>
-        {isEditing ? (
-          <input
-            type="text"
-            name="location"
-            value={profile.location}
-            onChange={handleInputChange}
-            className="w-full border rounded px-2 py-1 mt-2"
-          />
-        ) : (
-          <p className="mt-2 text-gray-600">{profile.location}</p>
-        )}
-
-        <h2 className="text-lg font-semibold text-gray-700 mt-4">Contact</h2>
-        {isEditing ? (
-          <input
-            type="text"
-            name="contact"
-            value={profile.contact}
-            onChange={handleInputChange}
-            className="w-full border rounded px-2 py-1 mt-2"
-          />
-        ) : (
-          <p className="mt-2 text-gray-600">{profile.contact}</p>
-        )}
-      </div>
-
-      <div className="mt-6 text-center">
-        <button
-          onClick={toggleEditing}
-          className={`px-4 py-2 rounded ${
-            isEditing ? "bg-rose-500 text-white" : "bg-rose-500 text-white"
-          }`}
-        >
-          {isEditing ? "Save" : "Edit"}
-        </button>
+      {/* Pet Card 2 */}
+      <div 
+        onClick={handleCardClick} // Menambahkan event onClick
+        className="mt-6 w-full max-w-md flex items-center bg-black rounded-lg overflow-hidden cursor-pointer"
+      >
+        <img
+          src={fotokucing}
+          alt="Pet"
+          className="w-1/3 object-cover"
+        />
+        <div className="p-4 flex-grow text-white">
+          <div className="flex items-center space-x-2">
+            <h2 className="text-lg font-bold">Noozy</h2>
+            <span className="text-pink-400">♀</span>
+          </div>
+        </div>
       </div>
     </div>
   );
-}
+};
 
 export default PetProfile;
