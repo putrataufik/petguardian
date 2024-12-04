@@ -5,6 +5,7 @@ import Schedule from "./pages/schedule";
 import SignUp from "./pages/signUp";
 import PetProfile from "./pages/petProfile";
 import UserProfile from "./pages/userProfile";
+import ListPetProfile from "./pages/listPetprofile";
 function App() {
   return (
     // Baca README.md untuk memudahkan pekerjaan
@@ -15,6 +16,7 @@ function App() {
     <Route path="/schedule" element={<Schedule />} />
     <Route path="/petprofile" element={<PetProfile />} /> 
     <Route path="/userProfile" element={<UserProfile />} /> 
+    <Route path="/listpetprofile" element={<ListPetProfile />} /> 
   </Routes>
   );
 }
