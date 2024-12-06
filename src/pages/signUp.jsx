@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { auth } from "../api/firebaseConfig";
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import googlelogo from "../assets/google.png";
 import fblogo from "../assets/fb.png";
@@ -20,19 +20,57 @@ function SignUp() {
     }
 
     try {
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
+      // Kirim data registrasi ke backend
+      const registerResponse = await fetch(
+        "http://localhost:5000/api/auth/register",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: username,
+            email: email,
+            password: password,
+          }),
+        }
       );
 
-      await updateProfile(userCredential.user, {
-        displayName: username,
-      });
+      const registerData = await registerResponse.json();
+      // Debugging registerResponse
+      console.log("Register Response:", registerResponse);
+      console.log("Register Data:", registerData);
+      if (registerResponse.ok) {
+        // Setelah registrasi berhasil, langsung panggil API login
+        const userCredential = await signInWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
 
-      navigate("/");
+        const token = await userCredential.user.getIdToken();
+        const loginResponse = await fetch("http://localhost:5000/api/auth/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",  // Ensure the body is sent as JSON
+          },
+          body: JSON.stringify({ idToken: token }), // Send token to backend
+        });
+
+        const loginData = await loginResponse.json();
+        console.log(loginData);
+
+        if (loginResponse.ok) {
+          // Navigasi ke halaman utama
+          navigate("/");
+        } else {
+          setError(loginData.error); // Tampilkan error dari API login
+        }
+      } else {
+        setError(registerData.error); // Tampilkan error dari API register
+      }
     } catch (err) {
-      setError(err.message);
+      setError(err.message); // Tampilkan error jika terjadi masalah
     }
   };
 
@@ -51,14 +89,20 @@ function SignUp() {
           stroke="currentColor"
           className="w-6 h-6"
         >
-          <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M15 19l-7-7 7-7"
+          />
         </svg>
       </button>
 
       <h1 className="text-3xl font-bold text-center mb-20">PetGuardian</h1>
 
       <div className="bg-white p-8 rounded-lg shadow-lg w-96">
-      <p className="text-gray-600 text-start font-bold mb-4">Create your Account</p>
+        <p className="text-gray-600 text-start font-bold mb-4">
+          Create your Account
+        </p>
         {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
 
         <input
@@ -107,11 +151,9 @@ function SignUp() {
         </div>
 
         <div className="flex space-x-5 items-center justify-center w-full py-2">
-            <img src={googlelogo} alt="Google" className="w-8 h-8 " />
-        
+          <img src={googlelogo} alt="Google" className="w-8 h-8 " />
 
-            <img src={fblogo} alt="Facebook" className="w-8 h-8" />
-         
+          <img src={fblogo} alt="Facebook" className="w-8 h-8" />
         </div>
 
         <p className="mt-6 text-center text-gray-600">
