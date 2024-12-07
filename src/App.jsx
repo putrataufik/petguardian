@@ -6,6 +6,7 @@ import SignUp from "./pages/signUp";
 import PetProfile from "./pages/petProfile";
 import UserProfile from "./pages/userProfile";
 import DetailPetProfile from "./pages/detailPetprofile";
+import Subscribe from "./pages/subscribe";
 function App() {
   return (
     // Baca README.md untuk memudahkan pekerjaan
@@ -17,6 +18,7 @@ function App() {
     <Route path="/petprofile" element={<PetProfile />} /> 
     <Route path="/userProfile" element={<UserProfile />} /> 
     <Route path="/detailpetprofile" element={<DetailPetProfile />} /> 
+    <Route path="/subscribe" element={<Subscribe />}/>
   </Routes>
   );
 }
