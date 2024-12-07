@@ -20,7 +20,7 @@ const AiDetection = () => {
       setSelectedFile(file); // Simpan file
       const reader = new FileReader();
       reader.onloadend = () => {
-        setPreviewImage(reader.result); // Set gambar ke preview
+        setPreviewImage(reader.result); 
       };
       reader.readAsDataURL(file);
     }

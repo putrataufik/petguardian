@@ -94,6 +94,18 @@ const BurgerMenu = ({ user }) => {
                   </button>
                 </div>
                 <div className="flex gap-2 justify-center items-center">
+                  <img src={ai} height={10} width={10} className="w-5 h-5" />
+                  <button
+                    onClick={() => {
+                      navigate("/subscribe");
+                      toggleMenu();
+                    }}
+                    className="text-gray-800 hover:bg-gray-100 rounded-lg"
+                  >
+                    Subscribe
+                  </button>
+                </div>
+                <div className="flex gap-2 justify-center items-center">
                   <img
                     src={logOut}
                     height={10}
