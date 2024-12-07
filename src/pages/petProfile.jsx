@@ -11,7 +11,7 @@ const PetProfile = () => {
 
   // Fungsi untuk menangani navigasi saat div diklik
   const handleCardClick = () => {
-    navigate("/detailpetprofile"); 
+    navigate("/detailpetprofile");
   };
 
   return (
@@ -32,7 +32,7 @@ const PetProfile = () => {
       <h1 className="text-2xl font-bold mt-6">Your Pets</h1>
 
       {/* Pet Card 1 */}
-      <div 
+      <div
         onClick={handleCardClick} // Menambahkan event onClick
         className="mt-6 w-full max-w-md flex items-center bg-black rounded-lg overflow-hidden cursor-pointer"
       >
@@ -50,7 +50,7 @@ const PetProfile = () => {
       </div>
 
       {/* Pet Card 2 */}
-      <div 
+      <div
         onClick={handleCardClick} // Menambahkan event onClick
         className="mt-6 w-full max-w-md flex items-center bg-black rounded-lg overflow-hidden cursor-pointer"
       >
@@ -65,6 +65,11 @@ const PetProfile = () => {
             <span className="text-pink-400">♀</span>
           </div>
         </div>
+      </div>
+      <div className="flex justify-center mt-6">
+        <button className="bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-blue-600 hover:shadow-lg transition duration-300">
+          Add New Pet
+        </button>
       </div>
     </div>
   );
