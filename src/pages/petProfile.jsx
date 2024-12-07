@@ -29,7 +29,13 @@ const PetProfile = () => {
       </div>
 
       {/* Title */}
-      <h1 className="text-2xl font-bold mt-6">Your Pets</h1>
+      <div className="flex justify-between items-center mt-6">
+  <h1 className="text-2xl font-bold">Your Pets</h1>
+  <button className="bg-pink-500 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-blue-600 hover:shadow-lg transition duration-300">
+    Add +
+  </button>
+</div>
+
 
       {/* Pet Card 1 */}
       <div
@@ -66,11 +72,7 @@ const PetProfile = () => {
           </div>
         </div>
       </div>
-      <div className="flex justify-center mt-6">
-        <button className="bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-blue-600 hover:shadow-lg transition duration-300">
-          Add New Pet
-        </button>
-      </div>
+      
     </div>
   );
 };
