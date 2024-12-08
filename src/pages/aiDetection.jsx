@@ -107,24 +107,24 @@ const AiDetection = () => {
           className="bg-black text-white py-3 px-4 rounded hover:bg-gray-800 w-full md:w-64 h-16 text-base font-bold"
           onClick={handleIdentifyBreed}
         >
-          Identify Pet Breed
+          Identify Your Pet
         </button>
-        <button
+        {/* <button
           className="bg-pink-500 text-white py-3 px-4 rounded hover:bg-pink-600 w-full md:w-64 h-16 text-base font-bold"
           onClick={handleCheckHealth}
         >
           Check for Health Issues
-        </button>
+        </button> */}
       </div>
 
-      <div className="flex flex-row items-center justify-center mt-8 w-full">
+      {/* <div className="flex flex-row items-center justify-center mt-8 w-full">
         <button
           className="bg-gray-300 text-gray-600 py-3 px-4 rounded cursor-not-allowed w-full md:w-64 h-14 text-base font-bold"
           onClick={handleGrooming}
         >
           Let's Grooming
         </button>
-      </div>
+      </div> */}
       <NavbarBottom />
     </div>
   );
