@@ -1,8 +1,8 @@
 import React from 'react';
 import { useAuthUser, useLogout } from "../hooks/authHooks";
 import { useNavigate } from "react-router-dom"; // Tambahkan useNavigate untuk navigasi
-import BurgerMenu from '../components/burgerMenu';
 import fotokucing from '../assets/kucing.png';
+import NavbarBottom from '../components/NavbarBottom'; // Import NavbarBottom
 
 const PetProfile = () => {
   const user = useAuthUser(); // Custom hook untuk mendapatkan user
@@ -15,10 +15,9 @@ const PetProfile = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 p-6 flex flex-col items-center">
+    <div className="min-h-screen bg-gray-100 p-6 pb-20 flex flex-col items-center relative">
       {/* Header */}
-      <div className="flex justify-between w-full items-center">
-        <BurgerMenu user={user} logout={logout} />
+      <div className="flex justify-end w-full items-center">
         {user && (
           <img
             src={user.photoURL}
@@ -29,13 +28,12 @@ const PetProfile = () => {
       </div>
 
       {/* Title */}
-      <div className="flex justify-between items-center mt-6">
-  <h1 className="text-2xl font-bold">Your Pets</h1>
-  <button className="bg-pink-500 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-blue-600 hover:shadow-lg transition duration-300">
-    Add +
-  </button>
-</div>
-
+      <div className="flex justify-between items-center mt-6 w-full">
+        <h1 className="text-2xl font-bold">Your Pets</h1>
+        <button className="bg-pink-500 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-blue-600 hover:shadow-lg transition duration-300">
+          Add +
+        </button>
+      </div>
 
       {/* Pet Card 1 */}
       <div
@@ -72,7 +70,9 @@ const PetProfile = () => {
           </div>
         </div>
       </div>
-      
+
+      {/* Navbar Bottom */}
+      <NavbarBottom />
     </div>
   );
 };

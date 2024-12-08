@@ -1,6 +1,6 @@
 import React from 'react';
 import { useAuthUser, useLogout } from "../hooks/authHooks";
-import BurgerMenu from '../components/burgerMenu';
+import NavbarBottom from "../components/NavbarBottom";
 
 const Subscribe = () => {
   const user = useAuthUser(); // Custom hook untuk mendapatkan user
@@ -9,19 +9,19 @@ const Subscribe = () => {
   return (
     <div className="min-h-screen bg-gray-100 p-6 flex flex-col items-center">
       {/* Bagian Header */}
-      <div className="flex justify-between w-full items-center mb-6">
-        <BurgerMenu user={user} logout={logout} />
+      <div className="flex justify-between w-full items-center py-6">
+      
         {user && (
           <img
             src={user.photoURL}
             alt="User Profile"
-            className="w-10 h-10 rounded-full"
+            className="w-10 h-10 rounded-full absolute right-4 top-4 cursor-pointer"
           />
         )}
       </div>
 
       {/* Konten Utama */}
-      <div className="bg-white rounded-lg shadow-md w-screen max-w-md p-6 text-center">
+      <div className="bg-white rounded-lg shadow-md w-screen max-w-md p-8 text-center">
         <h1 className="text-xl font-semibold mb-4">PetGuardian Plus</h1>
         <p className="text-3xl font-bold text-gray-800 mb-2">Rp. 100.000</p>
         <p className="text-gray-600 mb-6">Lifetime</p>
@@ -46,6 +46,7 @@ const Subscribe = () => {
           ORDER NOW
         </button>
       </div>
+      <NavbarBottom />
     </div>
   );
 };

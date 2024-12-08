@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import NavbarBottom from "../components/NavbarBottom";
 
 function UserProfile() {
   const [profile, setProfile] = useState({
@@ -130,6 +131,7 @@ function UserProfile() {
           {isEditing ? "Save" : "Edit"}
         </button>
       </div>
+      <NavbarBottom />
     </div>
   );
 }
