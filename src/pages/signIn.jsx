@@ -13,22 +13,62 @@ function SignIn() {
 
   const handleEmailSignIn = async () => {
     try {
-      await signInWithEmailAndPassword(auth, email, password);
-      navigate("/");
+      // Login with email and password using Firebase Auth SDK
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+
+      // Get Firebase ID Token
+      const token = await userCredential.user.getIdToken();
+
+      // Send ID token to backend for verification
+      const response = await fetch("http://localhost:5000/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",  // Ensure the body is sent as JSON
+        },
+        body: JSON.stringify({ idToken: token }), // Send token to backend
+      });
+
+      const data = await response.json();
+      console.log(data);
+
+      if (data.message === "Login successful!") {
+        navigate("/"); // Redirect to home page
+      } else {
+        setError(data.error); // Show error from backend
+      }
     } catch (err) {
-      setError(err.message);
+      setError(err.message); // Show error from Firebase Auth
     }
   };
-
 
   const handleGoogleSignIn = async () => {
     try {
-      await signInWithPopup(auth, googleProvider);
-      navigate("/");
+      const result = await signInWithPopup(auth, googleProvider);
+      const token = await result.user.getIdToken(); // Dapatkan ID Token dari Firebase
+  
+      // Kirim ID Token ke backend
+      const response = await fetch("http://localhost:5000/api/auth/login/google", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ idToken: token }),
+      });
+  
+      const data = await response.json();
+      if (data.message === "Login successful!") {
+        console.log("Login berhasil:", data);
+        navigate("/"); // Redirect ke halaman utama
+      } else {
+        setError(data.error); // Tampilkan error dari backend
+      }
     } catch (err) {
       setError(err.message);
     }
   };
+  
+  
+  
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-[#F1F3F4] relative">
@@ -84,7 +124,6 @@ function SignIn() {
           <span className="w-1/4 border-t"></span>
         </div>
 
-
         <div className="flex space-x-5 items-center justify-center w-full py-2">
           <img
             src={googlelogo}
@@ -92,10 +131,7 @@ function SignIn() {
             className="w-8 h-8"
             onClick={handleGoogleSignIn}
           />
-          <img src={fblogo}
-           alt="fb icon"
-           className="w-8 h-8"
-            />
+          <img src={fblogo} alt="fb icon" className="w-8 h-8" />
         </div>
         <p className="mt-6 text-center text-gray-600">
           Don't have an account?{" "}
