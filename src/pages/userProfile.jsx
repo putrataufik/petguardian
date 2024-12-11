@@ -1,86 +1,142 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import NavbarBottom from "../components/NavbarBottom";
+import { useAuthUser } from "../hooks/authHooks";
+import { db } from "../api/firebaseConfig";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 
 function UserProfile() {
-  const [profile, setProfile] = useState({
-    photo: "https://via.placeholder.com/150",
-    name: "John Doe",
-    gender: "Male",
-    aboutMe: "I love pets and enjoy taking care of them.",
-    location: "New York",
-    contact: "johndoe@example.com",
-  });
-
+  const user = useAuthUser(); // Ambil data pengguna
   const [isEditing, setIsEditing] = useState(false);
+  const [profile, setProfile] = useState({
+    gender: "Not specified",
+    aboutMe: "Tell us something about yourself.",
+    contact: "Not provided",
+  });
+  const [loading, setLoading] = useState(true); // Untuk loading data
 
-  const handlePhotoChange = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setProfile((prev) => ({ ...prev, photo: reader.result }));
+  useEffect(() => {
+    if (user) {
+      // Ambil data dari Firestore
+      const fetchData = async () => {
+        setLoading(true);
+        try {
+          const docRef = doc(db, "users", user.uid); // "users" adalah nama koleksi
+          const docSnap = await getDoc(docRef);
+
+          if (docSnap.exists()) {
+            setProfile(docSnap.data());
+          }
+        } catch (error) {
+          console.error("Error fetching user profile: ", error);
+        } finally {
+          setLoading(false);
+        }
       };
-      reader.readAsDataURL(file);
+
+      fetchData();
     }
-  };
+  }, [user]);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setProfile((prev) => ({ ...prev, [name]: value }));
   };
 
-  const toggleEditing = () => {
+  const toggleEditing = async () => {
+    if (isEditing) {
+      // Simpan data ke Firestore
+      try {
+        const docRef = doc(db, "users", user.uid);
+        await setDoc(docRef, profile); // Simpan data
+        alert("Profile updated successfully!");
+      } catch (error) {
+        console.error("Error updating profile: ", error);
+        alert("Failed to update profile.");
+      }
+    }
     setIsEditing((prev) => !prev);
   };
+
+  // Fungsi untuk menampilkan ikon sesuai gender
+  const getGenderIcon = (gender) => {
+    switch (gender) {
+      case "Male":
+        return "♂️";
+      case "Female":
+        return "♀️";
+      case "Other":
+        return "⚧️";
+      default:
+        return "❓";
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="max-w-2xl mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
+        <h2 className="text-xl font-semibold text-gray-700 text-center">Loading...</h2>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return (
+      <div className="max-w-2xl mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
+        <h2 className="text-xl font-semibold text-gray-700 text-center">
+          Please log in to view your profile.
+        </h2>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-2xl mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
       <div className="flex flex-col items-center">
+        {/* Foto Profil */}
         <div className="relative w-32 h-32">
           <img
-            src={profile.photo}
+            src={user.photoURL || "https://via.placeholder.com/150"}
             alt="Profile"
             className="w-full h-full object-cover rounded-full border-2 border-gray-300"
           />
-          <label className="absolute bottom-0 right-0 bg-rose-500 text-white p-1 rounded-full cursor-pointer">
-            <input
-              type="file"
-              accept="image/*"
-              className="hidden"
-              onChange={handlePhotoChange}
-            />
-            ✎
-          </label>
         </div>
 
-        {isEditing ? (
-          <input
-            type="text"
-            name="name"
-            value={profile.name}
-            onChange={handleInputChange}
-            className="mt-4 text-xl font-bold border rounded px-2 py-1"
-          />
-        ) : (
-          <h1 className="mt-4 text-xl font-bold">{profile.name}</h1>
-        )}
-
-        {isEditing ? (
-          <select
-            name="gender"
-            value={profile.gender}
-            onChange={handleInputChange}
-            className="text-gray-600 border rounded px-2 py-1 mt-2"
-          >
-           <option value="Male">♂️ Male</option>
-           <option value="Female">♀️ Female</option>
-            
-          </select>
-        ) : (
-          <p className="text-gray-600">{profile.gender}</p>
-        )}
+        {/* Nama dan Gender */}
+        <div className="mt-4 w-full text-center">
+          {isEditing ? (
+            <>
+              <input
+                type="text"
+                name="name"
+                defaultValue={user.displayName || "Unknown User"}
+                className="text-xl font-bold border rounded px-2 py-1 w-full mb-2"
+                disabled
+              />
+              <select
+                name="gender"
+                value={profile.gender}
+                onChange={handleInputChange}
+                className="text-gray-600 border rounded px-2 py-1 w-full"
+              >
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+                <option value="Not specified">Prefer not to say</option>
+              </select>
+            </>
+          ) : (
+            <>
+              <h1 className="text-xl font-bold">{user.displayName || "Unknown User"}</h1>
+              <p className="text-gray-600 flex items-center justify-center">
+                <span className="mr-2">{getGenderIcon(profile.gender)}</span>
+                {profile.gender}
+              </p>
+            </>
+          )}
+        </div>
       </div>
 
+      {/* Tentang Saya */}
       <div className="mt-6">
         <h2 className="text-lg font-semibold text-gray-700">About Me</h2>
         {isEditing ? (
@@ -93,21 +149,11 @@ function UserProfile() {
         ) : (
           <p className="mt-2 text-gray-600">{profile.aboutMe}</p>
         )}
+      </div>
 
-        <h2 className="text-lg font-semibold text-gray-700 mt-4">Location</h2>
-        {isEditing ? (
-          <input
-            type="text"
-            name="location"
-            value={profile.location}
-            onChange={handleInputChange}
-            className="w-full border rounded px-2 py-1 mt-2"
-          />
-        ) : (
-          <p className="mt-2 text-gray-600">{profile.location}</p>
-        )}
-
-        <h2 className="text-lg font-semibold text-gray-700 mt-4">Contact</h2>
+      {/* Kontak */}
+      <div className="mt-6">
+        <h2 className="text-lg font-semibold text-gray-700">Contact</h2>
         {isEditing ? (
           <input
             type="text"
@@ -121,6 +167,7 @@ function UserProfile() {
         )}
       </div>
 
+      {/* Tombol Edit/Simpan */}
       <div className="mt-6 text-center">
         <button
           onClick={toggleEditing}

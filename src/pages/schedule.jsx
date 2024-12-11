@@ -1,9 +1,11 @@
 import React from 'react'
 import { useAuthUser, useLogout } from "../hooks/authHooks";
+import { useNavigate } from "react-router-dom";
 import NavbarBottom from "../components/NavbarBottom";
 const schedule = () => {
   const user = useAuthUser(); // Custom hook untuk mendapatkan user
   const logout = useLogout(); // Custom hook untuk handle logout
+  const navigate = useNavigate(); // Hook untuk navigasi
   return (
     <div className="min-h-screen bg-gray-100 p-6 flex flex-col items-center">
       {/* Header */}
