@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import NavbarBottom from "../components/NavbarBottom";
 import { useAuthUser } from "../hooks/authHooks";
-import { db } from "../api/firebaseConfig";
-import { doc, getDoc, setDoc } from "firebase/firestore";
+
+
 
 function UserProfile() {
   const user = useAuthUser(); // Ambil data pengguna
@@ -14,28 +14,7 @@ function UserProfile() {
   });
   const [loading, setLoading] = useState(true); // Untuk loading data
 
-  useEffect(() => {
-    if (user) {
-      // Ambil data dari Firestore
-      const fetchData = async () => {
-        setLoading(true);
-        try {
-          const docRef = doc(db, "users", user.uid); // "users" adalah nama koleksi
-          const docSnap = await getDoc(docRef);
-
-          if (docSnap.exists()) {
-            setProfile(docSnap.data());
-          }
-        } catch (error) {
-          console.error("Error fetching user profile: ", error);
-        } finally {
-          setLoading(false);
-        }
-      };
-
-      fetchData();
-    }
-  }, [user]);
+  
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -43,18 +22,7 @@ function UserProfile() {
   };
 
   const toggleEditing = async () => {
-    if (isEditing) {
-      // Simpan data ke Firestore
-      try {
-        const docRef = doc(db, "users", user.uid);
-        await setDoc(docRef, profile); // Simpan data
-        alert("Profile updated successfully!");
-      } catch (error) {
-        console.error("Error updating profile: ", error);
-        alert("Failed to update profile.");
-      }
-    }
-    setIsEditing((prev) => !prev);
+    
   };
 
   // Fungsi untuk menampilkan ikon sesuai gender

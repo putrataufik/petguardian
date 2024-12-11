@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import {Route, Routes } from "react-router-dom";
 import SignIn from "./pages/signIn";
 import AiDetection from "./pages/aiDetection";
 import Schedule from "./pages/schedule";
@@ -7,6 +7,8 @@ import PetProfile from "./pages/petProfile";
 import UserProfile from "./pages/userProfile";
 import DetailPetProfile from "./pages/detailPetprofile";
 import Subscribe from "./pages/subscribe";
+import AddPet from "./pages/addPet";
+
 function App() {
   return (
     // Baca README.md untuk memudahkan pekerjaan
@@ -19,6 +21,7 @@ function App() {
     <Route path="/userProfile" element={<UserProfile />} /> 
     <Route path="/detailpetprofile" element={<DetailPetProfile />} /> 
     <Route path="/subscribe" element={<Subscribe />}/>
+    <Route path="/addPet" element={<AddPet />} />
   </Routes>
   );
 }
