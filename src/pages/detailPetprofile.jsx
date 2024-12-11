@@ -3,27 +3,25 @@ import fotokucing from '../assets/kucing.png'; // Ganti dengan path gambar yang 
 
 const DetailPetProfile = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-800">
+    <div className=" flex items-center justify-center ">
       {/* Kontainer utama */}
-      <div className="w-96 mt-20 relative">
+      <div className=" lg:w-100 mt-30">
         
-       
-        <button  onClick={() => window.history.back()}
-        className="absolute top-4 left-4 text-2xl text-gray-500 hover:text-gray-700 z-30">
+        <button onClick={() => window.history.back()}
+          className="absolute top-4 left-4 text-2xl text-gray-500 hover:text-gray-700 z-30">
           &#x2190; {/* Icon kembali */}
         </button>
 
-        
         <div>
           <div className="flex justify-center">
             <img
               src={fotokucing}
               alt="Pet"
-              className="h-90 w-90 object-cover rounded-t-lg"
+              className="w-full lg:w-screen object-cover" // Fullscreen on mobile
             />
           </div>
 
-          <div className="bg-white rounded-[50px] shadow-lg p-6 relative -top-10">
+          <div className="bg-white rounded-[50px] shadow-lg p-6 relative -top-10 h-full">
             {/* Konten pet */}
             <div className="text-center mt-4 ml-8">
               <h1 className="text-xl font-semibold">

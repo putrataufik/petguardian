@@ -37,7 +37,6 @@ const Subscribe = () => {
         onSuccess: async function (result) {
           console.log(result);
   
-          
           alert("Payment Success!")
           
         },
@@ -57,7 +56,6 @@ const Subscribe = () => {
       console.error("Error creating transaction:", error.response?.data || error.message);
     }
   };
-  
 
   return (
     <div className="min-h-screen bg-gray-100 p-6 flex flex-col items-center">
@@ -67,7 +65,7 @@ const Subscribe = () => {
           <img
             src={user.photoURL}
             alt="User Profile"
-            className="w-10 h-10 rounded-full"
+            className="w-10 h-10 rounded-full absolute right-4 top-4 cursor-pointer"
           />
         )}
       </div>
