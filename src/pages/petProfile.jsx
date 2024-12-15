@@ -81,9 +81,6 @@ const PetProfile = () => {
             />
             <div className="p-4 flex-grow text-white">
               <h2 className="text-lg font-bold">{pet.name}</h2>
-              <p>Species: {pet.species}</p>
-              <p>Breed: {pet.breed}</p>
-              <p>Age: {pet.age} years old</p>
             </div>
           </div>
         ))
