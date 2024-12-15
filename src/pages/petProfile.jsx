@@ -71,7 +71,7 @@ const PetProfile = () => {
         pets.map((pet) => (
           <div
             key={pet.petId}
-            onClick={() => handleCardClick(pet.petId)} // Pass pet ID saat klik
+            onClick={() => handleCardClick(pet.petId)}
             className="mt-6 w-full max-w-md flex items-center bg-black rounded-lg overflow-hidden cursor-pointer"
           >
             <img
