@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useAuthUser, useLogout } from "../hooks/authHooks";
-import BurgerMenu from '../components/burgerMenu';
+// import BurgerMenu from '../components/burgerMenu';
 import axios from 'axios';
 
 const Subscribe = () => {
@@ -60,7 +60,7 @@ const Subscribe = () => {
   return (
     <div className="min-h-screen bg-gray-100 p-6 flex flex-col items-center">
       <div className="flex justify-between w-full items-center mb-6">
-        <BurgerMenu user={user} logout={logout} />
+        {/* <BurgerMenu user={user} logout={logout} /> */}
         {user && (
           <img
             src={user.photoURL}

@@ -16,7 +16,7 @@ const PetProfile = () => {
   useEffect(() => {
     const fetchPets = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/pets/owner/${user.displayName}`);
+        const response = await axios.get(`http://localhost:5000/api/pets/owner/${user.uid}`);
         console.log("Pets data:", response.data); // Debugging, cek data yang diterima
         setPets(response.data.pets); // Mengupdate state pets
         setLoading(false);

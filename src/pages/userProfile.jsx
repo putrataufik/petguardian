@@ -2,8 +2,6 @@ import React, { useState, useEffect } from "react";
 import NavbarBottom from "../components/NavbarBottom";
 import { useAuthUser } from "../hooks/authHooks";
 
-
-
 function UserProfile() {
   const user = useAuthUser(); // Ambil data pengguna
   const [isEditing, setIsEditing] = useState(false);
@@ -33,13 +31,14 @@ function UserProfile() {
     }
   }, [user]);
 
+
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setProfile((prev) => ({ ...prev, [name]: value }));
   };
 
   const toggleEditing = async () => {
-    
+    // Add your save logic here if needed
   };
 
   // Fungsi untuk menampilkan ikon sesuai gender
@@ -148,9 +147,7 @@ function UserProfile() {
       <div className="mt-6 text-center">
         <button
           onClick={toggleEditing}
-          className={`px-4 py-2 rounded ${
-            isEditing ? "bg-rose-500 text-white" : "bg-rose-500 text-white"
-          }`}
+          className={`px-4 py-2 rounded ${isEditing ? "bg-rose-500 text-white" : "bg-rose-500 text-white"}`}
         >
           {isEditing ? "Save" : "Edit"}
         </button>
