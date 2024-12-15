@@ -8,7 +8,6 @@ const DetailPetProfile = () => {
   const user = useAuthUser(); // Mengambil data pengguna
   const { petId } = useParams(); // Menangkap petId dari URL
   const [pet, setPet] = useState(null);
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -23,20 +22,14 @@ const DetailPetProfile = () => {
         );
         const foundPet = response.data.pets.find((p) => p.petId === petId);
         setPet(foundPet); // Menyimpan pet yang sesuai dengan petId
-        setLoading(false);
       } catch (error) {
         console.error("Error fetching pet details:", error);
         setError("Failed to fetch pet details.");
-        setLoading(false);
       }
     };
 
     fetchPetDetails();
   }, [user, petId]);
-
-  if (loading) {
-    return <p>Loading...</p>;
-  }
 
   if (error) {
     return <p>{error}</p>;
@@ -47,28 +40,23 @@ const DetailPetProfile = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 pb-20 flex flex-col items-center relative">
-      {/* User Profile Icon */}
-      <div className="flex justify-end w-full items-center">
-        {user && (
-          <img
-            src={user.photoURL}
-            alt="User Profile"
-            className="w-10 h-10 rounded-full"
-          />
-        )}
-      </div>
+    <div className="min-h-screen pb-20 flex flex-col items-center relative">
+      {/* Tombol Kembali */}
+      <button
+        onClick={() => window.history.back()}
+        className="absolute top-4 left-4 text-2xl text-gray-500 hover:text-gray-700 z-30"
+      >
+        &#x2190; {/* Icon kembali */}
+      </button>
 
-      {/* Image set to h-screen */}
-      <div className="w-full h-screen relative">
-      <img
-  src={fotokucing}
-  alt="Pet"
-  className="w-full h-screen object-cover absolute top-0 left-0"
-/>
-
-      </div>
-
+      {/* Gambar */}
+      <div className="w-full h-[500px] sm:h-[600px] lg:h-[700px] relative">
+  <img
+    src={fotokucing}
+    alt="Pet"
+    className="w-full h-full object-cover absolute top-0 left-0"
+  />
+</div>
       {/* Card Below Image */}
       <div className="bg-white rounded-t-[50px] shadow-lg p-8 relative -top-20 max-w-4xl w-full mx-auto">
         <div className="text-center mt-4 ml-8">
