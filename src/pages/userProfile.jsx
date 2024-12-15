@@ -12,13 +12,11 @@ function UserProfile() {
     aboutMe: "Tell us something about yourself.",
     contact: "Not provided",
   });
-  const [loading, setLoading] = useState(true); // Untuk loading data
 
   useEffect(() => {
     if (user) {
       // Ambil data dari Firestore
       const fetchData = async () => {
-        setLoading(true);
         try {
           const docRef = doc(db, "users", user.uid); // "users" adalah nama koleksi
           const docSnap = await getDoc(docRef);
@@ -28,8 +26,6 @@ function UserProfile() {
           }
         } catch (error) {
           console.error("Error fetching user profile: ", error);
-        } finally {
-          setLoading(false);
         }
       };
 
@@ -70,14 +66,6 @@ function UserProfile() {
         return "❓";
     }
   };
-
-  if (loading) {
-    return (
-      <div className="max-w-2xl mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
-        <h2 className="text-xl font-semibold text-gray-700 text-center">Loading...</h2>
-      </div>
-    );
-  }
 
   if (!user) {
     return (
