@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useAuthUser, useLogout } from "../hooks/authHooks";
 // import BurgerMenu from '../components/burgerMenu';
 import axios from 'axios';
+import NavbarBottom from "../components/NavbarBottom";
 
 const Subscribe = () => {
   const user = useAuthUser(); // Custom hook untuk mendapatkan user
@@ -89,6 +90,7 @@ const Subscribe = () => {
           ORDER NOW
         </button>
       </div>
+      <NavbarBottom />
     </div>
   );
 };
