@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import NavbarBottom from "../components/NavbarBottom";
 import { useAuthUser } from "../hooks/authHooks";
-import { db } from "../api/firebaseConfig";
-import { doc, getDoc, setDoc } from "firebase/firestore";
+
+
 
 function UserProfile() {
   const user = useAuthUser(); // Ambil data pengguna
@@ -39,18 +39,7 @@ function UserProfile() {
   };
 
   const toggleEditing = async () => {
-    if (isEditing) {
-      // Simpan data ke Firestore
-      try {
-        const docRef = doc(db, "users", user.uid);
-        await setDoc(docRef, profile); // Simpan data
-        alert("Profile updated successfully!");
-      } catch (error) {
-        console.error("Error updating profile: ", error);
-        alert("Failed to update profile.");
-      }
-    }
-    setIsEditing((prev) => !prev);
+    
   };
 
   // Fungsi untuk menampilkan ikon sesuai gender
