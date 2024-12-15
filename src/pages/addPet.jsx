@@ -22,7 +22,7 @@ const AddPet = () => {
         }
 
         const petData = {
-            uid: user.uid,
+            owner: user.displayName,
             name: name,
             species: species,
             breed: breed,
