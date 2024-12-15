@@ -17,7 +17,6 @@ const PetProfile = () => {
     const fetchPets = async () => {
       try {
         const response = await axios.get(`http://localhost:5000/api/pets/owner/${user.uid}`);
-        console.log("Pets data:", response.data); // Debugging, cek data yang diterima
         setPets(response.data.pets); // Mengupdate state pets
         setLoading(false);
       } catch (error) {
@@ -34,7 +33,7 @@ const PetProfile = () => {
 
   // Fungsi untuk handle klik pet card
   const handleCardClick = (petId) => {
-    navigate(`/detailpetprofile/${petId}`);
+    navigate(`/detailpetprofile/${petId}`); // Pass pet ID saat klik
   };
 
   // Loading atau tidak ada pets
@@ -91,7 +90,7 @@ const PetProfile = () => {
       ) : (
         <p className="mt-6 text-white">No pets found. Add a new pet!</p>
       )}
-  <NavbarBottom />
+      <NavbarBottom />
     </div>
   );
 };
