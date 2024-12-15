@@ -19,7 +19,7 @@ function App() {
     <Route path="/schedule" element={<Schedule />} />
     <Route path="/petprofile" element={<PetProfile />} /> 
     <Route path="/userProfile" element={<UserProfile />} /> 
-    <Route path="/detailpetprofile" element={<DetailPetProfile />} /> 
+    <Route path="/detailpetprofile/:petId" element={<DetailPetProfile />} />
     <Route path="/subscribe" element={<Subscribe />}/>
     <Route path="/addPet" element={<AddPet />} />
   </Routes>

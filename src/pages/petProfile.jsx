@@ -16,8 +16,7 @@ const PetProfile = () => {
   useEffect(() => {
     const fetchPets = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/pets/owner/${user.displayName}`);
-        console.log("Pets data:", response.data); // Debugging, cek data yang diterima
+        const response = await axios.get(`http://localhost:5000/api/pets/owner/${user.uid}`);
         setPets(response.data.pets); // Mengupdate state pets
         setLoading(false);
       } catch (error) {
@@ -34,7 +33,7 @@ const PetProfile = () => {
 
   // Fungsi untuk handle klik pet card
   const handleCardClick = (petId) => {
-    navigate(`/detailpetprofile/${petId}`);
+    navigate(`/detailpetprofile/${petId}`); // Pass pet ID saat klik
   };
 
   // Loading atau tidak ada pets
@@ -72,7 +71,7 @@ const PetProfile = () => {
         pets.map((pet) => (
           <div
             key={pet.petId}
-            onClick={() => handleCardClick(pet.petId)} // Pass pet ID saat klik
+            onClick={() => handleCardClick(pet.petId)}
             className="mt-6 w-full max-w-md flex items-center bg-black rounded-lg overflow-hidden cursor-pointer"
           >
             <img
@@ -82,16 +81,13 @@ const PetProfile = () => {
             />
             <div className="p-4 flex-grow text-white">
               <h2 className="text-lg font-bold">{pet.name}</h2>
-              <p>Species: {pet.species}</p>
-              <p>Breed: {pet.breed}</p>
-              <p>Age: {pet.age} years old</p>
             </div>
           </div>
         ))
       ) : (
         <p className="mt-6 text-white">No pets found. Add a new pet!</p>
       )}
-  <NavbarBottom />
+      <NavbarBottom />
     </div>
   );
 };
