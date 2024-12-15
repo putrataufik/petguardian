@@ -11,6 +11,27 @@ function UserProfile() {
     contact: "Not provided",
   });
 
+  useEffect(() => {
+    if (user) {
+      // Ambil data dari Firestore
+      const fetchData = async () => {
+        try {
+          const docRef = doc(db, "users", user.uid); // "users" adalah nama koleksi
+          const docSnap = await getDoc(docRef);
+
+          if (docSnap.exists()) {
+            setProfile(docSnap.data());
+          }
+        } catch (error) {
+          console.error("Error fetching user profile: ", error);
+        }
+      };
+
+      fetchData();
+    }
+  }, [user]);
+
+
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setProfile((prev) => ({ ...prev, [name]: value }));
