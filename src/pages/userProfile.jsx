@@ -2,8 +2,6 @@ import React, { useState, useEffect } from "react";
 import NavbarBottom from "../components/NavbarBottom";
 import { useAuthUser } from "../hooks/authHooks";
 
-
-
 function UserProfile() {
   const user = useAuthUser(); // Ambil data pengguna
   const [isEditing, setIsEditing] = useState(false);
@@ -12,9 +10,6 @@ function UserProfile() {
     aboutMe: "Tell us something about yourself.",
     contact: "Not provided",
   });
-  const [loading, setLoading] = useState(true); // Untuk loading data
-
-  
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -22,7 +17,7 @@ function UserProfile() {
   };
 
   const toggleEditing = async () => {
-    
+    // Add your save logic here if needed
   };
 
   // Fungsi untuk menampilkan ikon sesuai gender
@@ -38,14 +33,6 @@ function UserProfile() {
         return "❓";
     }
   };
-
-  if (loading) {
-    return (
-      <div className="max-w-2xl mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
-        <h2 className="text-xl font-semibold text-gray-700 text-center">Loading...</h2>
-      </div>
-    );
-  }
 
   if (!user) {
     return (
@@ -139,9 +126,7 @@ function UserProfile() {
       <div className="mt-6 text-center">
         <button
           onClick={toggleEditing}
-          className={`px-4 py-2 rounded ${
-            isEditing ? "bg-rose-500 text-white" : "bg-rose-500 text-white"
-          }`}
+          className={`px-4 py-2 rounded ${isEditing ? "bg-rose-500 text-white" : "bg-rose-500 text-white"}`}
         >
           {isEditing ? "Save" : "Edit"}
         </button>
