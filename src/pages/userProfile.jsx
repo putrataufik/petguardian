@@ -82,19 +82,6 @@ const UserProfile = () => {
 
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col">
-      {/* Header */}
-      <div className="relative w-full flex justify-center items-center py-4 bg-white shadow-md">
-        {user && (
-          <img
-            src={user.photoURL}
-            alt="User Profile"
-            className="w-10 h-10 rounded-full absolute right-4 top-4 cursor-pointer"
-            onClick={() => navigate("/userProfile")}
-          />
-        )}
-      </div>
-
-      {/* Konten Utama */}
       {userData && (
         <div className="flex items-center justify-center flex-1">
           <div className="bg-white shadow-md rounded-lg p-6 w-80">
