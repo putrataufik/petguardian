@@ -59,7 +59,7 @@ const NavbarBottom = () => {
         onClick={() => navigate("/userProfile")}
         className="flex flex-col items-center text-white"
       >
-        {/* Menampilkan gambar jika tersedia, jika tidak tampilkan fallback icon */}
+        
         {userPicture ? (
           <img
             src={userPicture}
