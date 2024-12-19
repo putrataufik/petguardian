@@ -32,7 +32,7 @@ function SignIn() {
       console.log(data);
 
       if (data.message === "Login successful!") {
-        navigate("/"); // Redirect to home page
+        navigate("/aidetection"); // Redirect to home page
       } else {
         setError(data.error); // Show error from backend
       }
@@ -58,7 +58,7 @@ function SignIn() {
       const data = await response.json();
       if (data.message === "Login successful!") {
         console.log("Login berhasil:", data);
-        navigate("/"); // Redirect ke halaman utama
+        navigate("/aidetection"); // Redirect ke halaman utama
       } else {
         setError(data.error); // Tampilkan error dari backend
       }

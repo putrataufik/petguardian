@@ -1,160 +1,123 @@
 import React, { useEffect, useState } from "react";
-import { useAuthUser } from "../hooks/authHooks";
-import { useNavigate } from "react-router-dom";
+import { useAuthUser, useLogout } from "../hooks/authHooks";
+import { getUserByUID, updateUserByUID } from "../api/userApi";
+import { getPetByOwnerUID } from "../api/petApi";
+import ProfileCard from "../components/profileCard";
+import EditProfileForm from "../components/editProfileForm";
+import PetsList from "../components/petList";
 import NavbarBottom from "../components/NavbarBottom";
 
 const UserProfile = () => {
-  const [userData, setUserData] = useState(null);
-  const [error, setError] = useState(null);
-  const [newName, setNewName] = useState("");
-  const [newPicture, setNewPicture] = useState(null);
-  const [isEditing, setIsEditing] = useState(false);
-
   const user = useAuthUser();
-  const navigate = useNavigate();
+  const logout = useLogout();
+  const [userData, setUserData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
+  const [formData, setFormData] = useState({ name: "" });
+  const [pets, setPets] = useState([]);
 
-  // Fetch data dari API
   useEffect(() => {
-    const fetchUser = async () => {
+    const fetchUserData = async () => {
       try {
-        const response = await fetch(
-          "http://localhost:5000/api/users/getuserbyuid/ub6fMHWtuuYN8rIuVdJE2zR6AvN2"
-        );
-        const data = await response.json();
-
-        if (response.ok) {
-          setUserData(data.user);
-          setNewName(data.user.name);
-        } else {
-          setError("Failed to fetch user data.");
-        }
+        const data = await getUserByUID(user.uid);
+        setUserData(data);
+        setFormData({ name: data.name });
+        setLoading(false);
       } catch (err) {
-        setError("An error occurred while fetching user data.");
+        console.error("Error fetching user data:", err);
+        setError("Failed to fetch user data.");
+        setLoading(false);
       }
     };
 
-    fetchUser();
-  }, []);
+    if (user) fetchUserData();
+  }, [user]);
 
-  // Handle file upload
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    setNewPicture(file);
-  };
+  useEffect(() => {
+    const fetchUserDataAndPets = async () => {
+      try {
+        // Ambil data user
+        const data = await getUserByUID(user.uid);
+        setUserData(data);
+        setFormData({ name: data.name });
 
-  // Simpan perubahan nama dan gambar
-  const handleSaveChanges = async () => {
-    const formData = new FormData();
-    formData.append("name", newName);
-    if (newPicture) {
-      formData.append("picture", newPicture);
-    }
+        // Ambil data pets
+        const petsData = await getPetByOwnerUID(user.uid);
+        setPets(petsData);
 
-    try {
-      const response = await fetch(
-        "http://localhost:5000/api/users/updateuser/ub6fMHWtuuYN8rIuVdJE2zR6AvN2",
-        {
-          method: "PUT",
-          body: formData,
-        }
-      );
-
-      const result = await response.json();
-      if (response.ok) {
-        setUserData({ ...userData, name: newName, picture: result.picture });
-        setIsEditing(false);
-        alert("Profile updated successfully!");
-      } else {
-        alert("Failed to update profile.");
+        setLoading(false);
+      } catch (err) {
+        console.error("Error fetching user data or pets:", err);
+        setError("Failed to fetch user data or pets.");
+        setLoading(false);
       }
+    };
+
+    if (user) fetchUserDataAndPets();
+  }, [user]);
+
+  const handleLogout = async () => {
+    await logout();
+  };
+
+  const toggleEditMode = () => {
+    console.log("Edit button clicked! isEditing:", isEditing);
+    setIsEditing(!isEditing);
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSave = async () => {
+    try {
+      console.log("Save button clicked! isEditing:", isEditing);
+      await updateUserByUID(user.uid, formData); // Simpan data ke server/api
+      setUserData((prev) => ({ ...prev, ...formData })); // Update state dengan data baru
+      setIsEditing(false); // Tutup form setelah berhasil simpan
+      alert("Data updated successfully!");
     } catch (err) {
-      alert("An error occurred while updating the profile.");
+      console.error("Error updating user data:", err);
+      alert("Failed to update user data.");
+    } finally {
+      setIsEditing(false); // Pastikan form ditutup terlepas berhasil/gagal
     }
   };
 
-  if (error) {
-    return (
-      <div className="text-red-500 text-center h-screen flex items-center justify-center">
-        {error}
-      </div>
-    );
-  }
+  if (loading) return <p className="mt-6 text-black">Loading user data...</p>;
+  if (error) return <p className="mt-6 text-red-500">{error}</p>;
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col">
+    <div className="min-h-screen bg-white flex flex-col items-center relative">
       {userData && (
-        <div className="flex items-center justify-center flex-1">
-          <div className="bg-white shadow-md rounded-lg p-6 w-80">
-            <div className="flex justify-center mb-4">
-              <label htmlFor="fileInput" className="cursor-pointer">
-                <img
-                  src={
-                    newPicture
-                      ? URL.createObjectURL(newPicture)
-                      : userData.picture
-                  }
-                  alt="User"
-                  className="rounded-full w-24 h-24"
-                />
-                <input
-                  type="file"
-                  id="fileInput"
-                  className="hidden"
-                  onChange={handleFileChange}
-                />
-              </label>
-            </div>
-
-            {isEditing ? (
-              <input
-                type="text"
-                value={newName}
-                onChange={(e) => setNewName(e.target.value)}
-                className="border border-gray-300 rounded w-full px-3 py-2 mb-2"
-              />
-            ) : (
-              <h2 className="text-xl font-semibold text-center mt-4">
-                {userData.name}
-              </h2>
-            )}
-
-            <p className="text-gray-500 text-center mt-2">{userData.email}</p>
-            <p className="text-gray-400 text-center mt-2">
-              Member since:{" "}
-              {new Date(userData.createdAt._seconds * 1000).toLocaleDateString()}
-            </p>
-
-            {/* Edit & Save Buttons */}
-            <div className="flex justify-center mt-4">
-              {isEditing ? (
-                <button
-                  onClick={handleSaveChanges}
-                  className="bg-blue-500 text-white px-4 py-2 rounded mr-2"
-                >
-                  Save
-                </button>
-              ) : (
-                <button
-                  onClick={() => setIsEditing(true)}
-                  className="bg-yellow-400 text-white px-4 py-2 rounded mr-2"
-                >
-                  Edit
-                </button>
-              )}
-              {isEditing && (
-                <button
-                  onClick={() => setIsEditing(false)}
-                  className="bg-gray-400 text-white px-4 py-2 rounded"
-                >
-                  Cancel
-                </button>
-              )}
-            </div>
-          </div>
-        </div>
+        <>
+          <ProfileCard
+            userData={userData}
+            toggleEditMode={toggleEditMode}
+            isEditing={isEditing}
+            formData={formData}
+            handleInputChange={handleInputChange}
+            handleSave={handleSave}
+          />
+          {isEditing && (
+            <EditProfileForm
+              formData={formData}
+              onChange={handleInputChange}
+              onSave={handleSave}
+            />
+          )}
+          {/* Render pets di sini */}
+          <PetsList pets={pets} />
+        </>
       )}
-
-      {/* Navbar Bottom */}
+      <button
+        onClick={handleLogout}
+        className="mt-6 bg-red-500 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-red-600 transition duration-300"
+      >
+        Logout
+      </button>
       <NavbarBottom />
     </div>
   );
