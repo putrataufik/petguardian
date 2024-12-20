@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useAuthUser, useLogout } from "../hooks/authHooks";
 import { getUserByUID, updateUserByUID } from "../api/userApi";
-import { getPetByOwnerUID } from "../api/petApi";
 import ProfileCard from "../components/profileCard";
 import EditProfileForm from "../components/editProfileForm";
-import PetsList from "../components/petList";
-import NavbarBottom from "../components/NavbarBottom";
+import { Button } from "@material-tailwind/react";
 
 const UserProfile = () => {
   const user = useAuthUser();
@@ -32,29 +30,6 @@ const UserProfile = () => {
     };
 
     if (user) fetchUserData();
-  }, [user]);
-
-  useEffect(() => {
-    const fetchUserDataAndPets = async () => {
-      try {
-        // Ambil data user
-        const data = await getUserByUID(user.uid);
-        setUserData(data);
-        setFormData({ name: data.name });
-
-        // Ambil data pets
-        const petsData = await getPetByOwnerUID(user.uid);
-        setPets(petsData);
-
-        setLoading(false);
-      } catch (err) {
-        console.error("Error fetching user data or pets:", err);
-        setError("Failed to fetch user data or pets.");
-        setLoading(false);
-      }
-    };
-
-    if (user) fetchUserDataAndPets();
   }, [user]);
 
   const handleLogout = async () => {
@@ -103,22 +78,24 @@ const UserProfile = () => {
           />
           {isEditing && (
             <EditProfileForm
-              formData={formData}
-              onChange={handleInputChange}
-              onSave={handleSave}
-            />
+            open={isEditing} // Mengontrol apakah drawer terbuka
+            formData={formData}
+            onChange={handleInputChange}
+            onSave={handleSave}
+            onCancel={() => setIsEditing(false)} // Menutup drawer
+          />
+          
           )}
-          {/* Render pets di sini */}
-          <PetsList pets={pets} />
         </>
       )}
-      <button
+      <Button
         onClick={handleLogout}
-        className="mt-6 bg-red-500 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-red-600 transition duration-300"
+        color="red"
+        variant="filled"
+        className="mt-6"
       >
         Logout
-      </button>
-      <NavbarBottom />
+      </Button>
     </div>
   );
 };

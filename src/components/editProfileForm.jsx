@@ -1,25 +1,44 @@
 import React from "react";
+import { Drawer, Button } from "@material-tailwind/react";
 
-const EditProfileForm = ({ formData, onChange, onSave }) => {
-    console.log("EditProfileForm -> formData", formData)
+const EditProfileForm = ({ formData, onChange, onSave, onCancel, open }) => {
+  console.log("EditProfileForm -> formData", formData);
+
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-white p-4 shadow-lg border-t border-gray-200 transition-transform transform translate-y-0 z-10">
-      <h3 className="text-lg font-bold mb-4">Edit Name</h3>
+    <Drawer
+      open={open}
+      onClose={onCancel}
+      placement="bottom"
+      className="p-3 shadow-lg border-t border-gray-200 rounded-t-3xl"
+      size={170}
+    >
+      <div className="flex justify-between items-center mb-3">
+        <h3 className="text-md font-semibold">Edit Name</h3>
+        <Button
+          variant="text"
+          size="sm"
+          color="red"
+          onClick={onCancel}
+          className="text-red-600"
+        >
+          X
+        </Button>
+      </div>
       <input
         type="text"
         name="name"
         value={formData.name}
         onChange={onChange}
         placeholder="Enter new name"
-        className="w-full mb-4 p-2 border rounded"
+        className="w-full mb-3 p-2 border border-gray-300 rounded text-sm"
       />
-      <button
+      <Button
         onClick={onSave}
-        className="w-full bg-[#F8567B] text-white py-2 rounded hover:bg-green-600"
+        className="w-full bg-[#F8567B] text-white py-2 rounded text-sm hover:bg-green-600"
       >
         Save
-      </button>
-    </div>
+      </Button>
+    </Drawer>
   );
 };
 
