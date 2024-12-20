@@ -8,18 +8,20 @@ import { useAuthUser } from "../hooks/authHooks"; // Mengimpor hook untuk autent
 
 const NavbarBottom = () => {
   const user = useAuthUser(); // Ambil data pengguna
-  const [userPicture, setUserPicture] = useState(""); // State untuk menyimpan gambar user
+  const [imageUrl, setImageUrl] = useState(""); // State untuk menyimpan URL gambar user
 
-  // Menetapkan gambar profil jika user photoURL ada
+  // Menetapkan URL gambar profil jika user.photoURL ada
   useEffect(() => {
     if (user && user.photoURL) {
-      setUserPicture(user.photoURL); // Menetapkan foto profil jika ada
+      const url = `http://localhost:5000/api/images/cache?url=${encodeURIComponent(user.photoURL)}`;
+      setImageUrl(url);
+    } else {
+      setImageUrl(""); // Reset jika user atau photoURL tidak ada
     }
   }, [user]);
 
   return (
-    <div className="fixed bottom-0 left-0 w-full 
-    bg-[#E0A0AE] flex justify-around items-center py-4 px-6 shadow-md">
+    <div className="fixed bottom-0 left-0 w-full bg-[#E0A0AE] flex justify-around items-center py-4 px-6 shadow-md">
       {/* Grooming Button */}
       <Link to="/subscribe" className="flex flex-col items-center text-black">
         <FaScissors size={25} />
@@ -47,10 +49,14 @@ const NavbarBottom = () => {
 
       {/* User Profile Button */}
       <Link to="/userProfile" className="flex flex-col items-center text-white">
-        {userPicture ? (
+        {imageUrl ? (
           <img
-            src={userPicture}
+            src={imageUrl}
             alt="User Profile"
+            onError={(e) => {
+              e.target.onerror = null; // Prevent infinite loop
+              e.target.src = ""; // Set gambar kosong jika gagal dimuat
+            }}
             className="w-8 h-8 rounded-full"
           />
         ) : (

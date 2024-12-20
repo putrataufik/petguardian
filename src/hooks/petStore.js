@@ -21,6 +21,13 @@ const usePetStore = create(
           set({ error: "Failed to fetch pets.", loading: false });
         }
       },
+      
+      addPet: (newPet) =>
+        set((state) => ({
+          pets: [...state.pets, newPet], // Tambahkan pet baru ke array pets
+        })),
+
+      clearPets: () => set({ pets: [], error: null, loading: false }), // Fungsi untuk menghapus data pets
     }),
     {
       name: "pet-storage", // Key untuk localStorage

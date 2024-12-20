@@ -114,7 +114,6 @@ const AiDetection = () => {
           Let's Grooming
         </button>
       </div> */}
-      <NavbarBottom />
     </div>
   );
 };
