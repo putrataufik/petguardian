@@ -8,6 +8,7 @@ import UserProfile from "./pages/userProfile";
 import DetailPetProfile from "./pages/detailPetprofile";
 import Subscribe from "./pages/subscribe";
 import AddPet from "./pages/addPet";
+import AddSchedule from "./pages/addschedule";
 import NavbarBottom from "./components/NavbarBottom"; // Import NavbarBottom
 import React from "react";
 
@@ -26,6 +27,7 @@ function AuthLayout({ children }) {
   return <>{children}</>;
 }
 
+
 function App() {
   return (
     <Routes>
@@ -41,6 +43,8 @@ function App() {
       <Route path="/userProfile" element={<MainLayout><UserProfile /></MainLayout>} />
       <Route path="/subscribe" element={<MainLayout><Subscribe /></MainLayout>} />
       <Route path="/addPet" element={<MainLayout><AddPet /></MainLayout>} />
+<Route path="/addSchedule" element={<MainLayout><AddSchedule /></MainLayout>} />
+                                          
     </Routes>
   );
 }
