@@ -1,21 +1,21 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; // Untuk navigasi ke petProfile
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useAuthUser } from "../hooks/authHooks";
+import usePetStore from "../hooks/petStore"; // Import store Zustand
 
 const AddPet = () => {
     const user = useAuthUser();
+    const { fetchPets } = usePetStore(); // Ambil fungsi untuk fetch pets
     const [name, setName] = useState("");
     const [species, setSpecies] = useState("");
     const [breed, setBreed] = useState("");
     const [age, setAge] = useState("");
     const navigate = useNavigate();
-    
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // Pastikan semua input valid
         if (!name || !species || !breed || !age) {
             alert("Please fill all fields");
             return;
@@ -33,7 +33,11 @@ const AddPet = () => {
             // Kirim data pet ke API
             const response = await axios.post("http://localhost:5000/api/pets/add", petData);
             console.log("Pet added successfully:", response.data);
-            navigate("/petProfile"); // Kembali ke pet profile setelah berhasil menambahkan pet
+            
+            // Setelah berhasil menambah pet, fetch pets terbaru
+            fetchPets(user.uid);
+
+            navigate("/petProfile"); // Navigasi ke pet profile setelah berhasil menambahkan pet
         } catch (error) {
             console.error("Error adding pet:", error);
         }

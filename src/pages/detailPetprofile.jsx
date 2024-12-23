@@ -36,7 +36,7 @@ const DetailPetProfile = () => {
   }
 
   if (!pet) {
-    return <p>Pet not found</p>;
+    return <p></p>;
   }
 
   return (

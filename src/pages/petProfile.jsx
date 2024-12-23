@@ -1,93 +1,59 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useAuthUser } from "../hooks/authHooks";
 import { useNavigate } from "react-router-dom";
 import fotokucing from "../assets/kucing.png";
-import NavbarBottom from "../components/NavbarBottom";
-import axios from "axios";
+import usePetStore from "../hooks/petStore"; // Import store Zustand
 
 const PetProfile = () => {
-  const user = useAuthUser(); // Mengambil data pengguna
+  const user = useAuthUser();
   const navigate = useNavigate();
-  const [pets, setPets] = useState([]); // State untuk pets
-  const [loading, setLoading] = useState(true); // Loading state
-  const [error, setError] = useState(null); // Error state
+  const { pets, loading, error, fetchPets } = usePetStore(); // Ambil data pets dari store Zustand
 
-  // Ambil data pet saat komponen dimuat
+  // Fetch pets saat komponen dimuat
   useEffect(() => {
-    const fetchPets = async () => {
-      try {
-        const response = await axios.get(`http://localhost:5000/api/pets/owner/${user.uid}`);
-        setPets(response.data.pets); // Mengupdate state pets
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching pets:", error);
-        setError("Failed to fetch pets.");
-        setLoading(false);
-      }
-    };
-
-    if (user) {
-      fetchPets();
+    if (user?.uid && pets.length === 0) {
+      fetchPets(user.uid); // Fetch pets hanya jika belum ada data
     }
-  }, [user]); // Bergantung pada user, jika user berubah, ambil data baru
+  }, [user?.uid, pets.length, fetchPets]);
 
   // Fungsi untuk handle klik pet card
   const handleCardClick = (petId) => {
-    navigate(`/detailpetprofile/${petId}`); // Pass pet ID saat klik
+    navigate(`/detailpetprofile/${petId}`); // Navigasi ke halaman detail pet
   };
 
-  // Loading atau tidak ada pets
   return (
-    <div className="min-h-screen bg-gray-100 p-6 pb-20 flex flex-col items-center relative">
-      {/* Header */}
-      <div className="flex justify-end w-full items-center">
-        {user && (
-          <img
-            src={user.photoURL}
-            alt="User Profile"
-            className="w-10 h-10 rounded-full"
-            onClick={() => navigate("/userProfile")}
-          />
-        )}
-      </div>
-
-      {/* Title */}
-      <div className="flex justify-between items-center mt-6 w-full">
+    <div className="min-h-screen bg-gray-100 p-6 pb-24 flex flex-col items-center relative">
+      <div className="flex justify-center items-center mt-6 w-full">
         <h1 className="text-2xl font-bold">Your Pets</h1>
-        <button
-          onClick={() => navigate("/addPet")}
-          className="bg-pink-500 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-blue-600 hover:shadow-lg transition duration-300"
-        >
-          Add +
-        </button>
       </div>
 
-      {/* Tampilkan loading atau pets */}
-      {loading ? (
-        <p className="mt-6 text-white">Loading pets...</p>
+      {loading && pets.length === 0 ? (
+        <p className="mt-6 text-gray-500">Loading pets...</p>
       ) : error ? (
-        <p className="mt-6 text-white">{error}</p>
+        <p className="mt-6 text-red-600">{error}</p>
       ) : pets.length > 0 ? (
         pets.map((pet) => (
           <div
             key={pet.petId}
             onClick={() => handleCardClick(pet.petId)}
-            className="mt-6 w-full max-w-md flex items-center bg-black rounded-lg overflow-hidden cursor-pointer"
+            className="mt-6 w-full max-w-md flex items-center bg-[#1D1D1D] rounded-r-lg overflow-hidden cursor-pointer"
           >
-            <img
-              src={fotokucing}
-              alt="Pet"
-              className="w-1/3 object-cover"
-            />
+            <img src={fotokucing} alt="Pet" className="w-1/3 object-cover" />
             <div className="p-4 flex-grow text-white">
-              <h2 className="text-lg font-bold">{pet.name}</h2>
+              <h2 className="text-lg font-bold text-white">{pet.name || "Unnamed Pet"}</h2>
             </div>
           </div>
         ))
       ) : (
-        <p className="mt-6 text-white">No pets found. Add a new pet!</p>
+        <p className="mt-6 text-gray-500">No pets found. Add a new pet!</p>
       )}
-      <NavbarBottom />
+
+      <button
+        onClick={() => navigate("/addPet")}
+        className="fixed bottom-20 right-4 bg-pink-500 text-white font-semibold py-3 px-4 rounded-full shadow-md hover:bg-pink-600 hover:shadow-lg transition duration-300"
+      >
+        Add +
+      </button>
     </div>
   );
 };

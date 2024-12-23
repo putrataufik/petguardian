@@ -1,6 +1,6 @@
+
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import NavbarBottom from "../components/NavbarBottom";
 
 const Schedule = () => {
   const navigate = useNavigate();
@@ -25,6 +25,14 @@ const Schedule = () => {
       date: "11 Januari, 2024",
     },
   ];
+=======
+import React from 'react';
+import { useAuthUser } from "../hooks/authHooks";
+import { useNavigate } from "react-router-dom";
+
+const Schedule = () => {
+  const user = useAuthUser(); // Custom hook untuk mendapatkan user
+  const navigate = useNavigate(); // Hook untuk navigasi
 
   return (
     <div className="min-h-screen bg-gray-100 p-6 flex flex-col items-center">
@@ -121,17 +129,13 @@ const Schedule = () => {
           </div>
         ))}
       </div>
-
-      {/* Add Button */}
+{/* Add Button */}
       <button
         onClick={() => navigate("/addschedule")}
         className="fixed bottom-20 right-6 w-14 h-14 bg-pink-500 rounded-full text-white text-2xl shadow-lg"
       >
         +
       </button>
-
-
-      <NavbarBottom />
     </div>
   );
 };
