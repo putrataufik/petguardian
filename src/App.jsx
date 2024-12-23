@@ -12,7 +12,6 @@ import AddSchedule from "./pages/addschedule";
 
 function App() {
   return (
-    // Baca README.md untuk memudahkan pekerjaan
     <Routes>
     <Route path="/" element={<AiDetection />} />
     <Route path="/signin" element={<SignIn />} />
@@ -24,6 +23,7 @@ function App() {
     <Route path="/subscribe" element={<Subscribe />}/>
     <Route path="/addPet" element={<AddPet />} />
     <Route path="/addschedule" element={<AddSchedule />} />
+    
   </Routes>
   );
 }
