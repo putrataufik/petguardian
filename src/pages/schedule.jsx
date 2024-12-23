@@ -1,41 +1,31 @@
-
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
+const schedules = [
+  {
+    time: "10:00",
+    title: "Grooming Noozy",
+    location: "Phinisi Point Mall",
+    date: "11 Januari, 2024",
+  },
+  {
+    time: "13:00",
+    title: "Grooming Noozy",
+    location: "Phinisi Point Mall",
+    date: "11 Januari, 2024",
+  },
+  {
+    time: "19:00",
+    title: "Grooming Noozy",
+    location: "Phinisi Point Mall",
+    date: "11 Januari, 2024",
+  },
+];
+
 const Schedule = () => {
   const navigate = useNavigate();
-
-  const schedules = [
-    {
-      time: "10:00",
-      title: "Grooming Noozy",
-      location: "Phinisi Point Mall",
-      date: "11 Januari, 2024",
-    },
-    {
-      time: "13:00",
-      title: "Grooming Noozy",
-      location: "Phinisi Point Mall",
-      date: "11 Januari, 2024",
-    },
-    {
-      time: "19:00",
-      title: "Grooming Noozy",
-      location: "Phinisi Point Mall",
-      date: "11 Januari, 2024",
-    },
-  ];
-=======
-import React from 'react';
-import { useAuthUser } from "../hooks/authHooks";
-import { useNavigate } from "react-router-dom";
-
-const Schedule = () => {
-  const user = useAuthUser(); // Custom hook untuk mendapatkan user
-  const navigate = useNavigate(); // Hook untuk navigasi
-
   return (
-    <div className="min-h-screen bg-gray-100 p-6 flex flex-col items-center">
+    <div className="min-h-screen bg-gray-100 p-6 pb-24 flex flex-col items-center">
       {/* Header */}
       <div className="w-full flex justify-between items-center mb-4">
         <h1 className="text-xl font-bold text-gray-800">Your Pet Schedule</h1>
@@ -80,7 +70,6 @@ const Schedule = () => {
                 <div className="h-16 border-l-2 border-gray-300"></div>
               )}
             </div>
-
 
             {/* Content */}
             <div className="flex-1 p-4 bg-white rounded-lg shadow-md">
@@ -129,7 +118,8 @@ const Schedule = () => {
           </div>
         ))}
       </div>
-{/* Add Button */}
+
+      {/* Add Button */}
       <button
         onClick={() => navigate("/addschedule")}
         className="fixed bottom-20 right-6 w-14 h-14 bg-pink-500 rounded-full text-white text-2xl shadow-lg"
