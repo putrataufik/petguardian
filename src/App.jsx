@@ -8,6 +8,7 @@ import UserProfile from "./pages/userProfile";
 import DetailPetProfile from "./pages/detailPetprofile";
 import Subscribe from "./pages/subscribe";
 import AddPet from "./pages/addPet";
+import AddSchedule from "./pages/addschedule";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
     <Route path="/detailpetprofile/:petId" element={<DetailPetProfile />} />
     <Route path="/subscribe" element={<Subscribe />}/>
     <Route path="/addPet" element={<AddPet />} />
+    <Route path="/addschedule" element={<AddSchedule />} />
   </Routes>
   );
 }
