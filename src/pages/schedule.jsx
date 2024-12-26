@@ -1,26 +1,32 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuthUser } from "../hooks/authHooks"; // Custom hook for user authentication
 
-const schedules = [
-  {
-    time: "10:00",
-    title: "Grooming Noozy",
-    location: "Phinisi Point Mall",
-    date: "11 Januari, 2024",
-  },
-  {
-    time: "13:00",
-    title: "Grooming Noozy",
-    location: "Phinisi Point Mall",
-    date: "11 Januari, 2024",
-  },
-  {
-    time: "19:00",
-    title: "Grooming Noozy",
-    location: "Phinisi Point Mall",
-    date: "11 Januari, 2024",
-  },
-];
+
+const Schedule = () => {
+  const user = useAuthUser(); // Retrieve authenticated user
+  const navigate = useNavigate(); // Hook for navigation
+
+  const schedules = [
+    {
+      time: "10:00",
+      title: "Grooming Noozy",
+      location: "Phinisi Point Mall",
+      date: "11 Januari, 2024",
+    },
+    {
+      time: "13:00",
+      title: "Grooming Noozy",
+      location: "Phinisi Point Mall",
+      date: "11 Januari, 2024",
+    },
+    {
+      time: "19:00",
+      title: "Grooming Noozy",
+      location: "Phinisi Point Mall",
+      date: "11 Januari, 2024",
+    },
+  ];
 
 const Schedule = () => {
   const navigate = useNavigate();
@@ -34,6 +40,7 @@ const Schedule = () => {
           <option>Upcoming</option>
           <option>Completed</option>
         </select>
+
       </div>
 
       {/* Timeline */}
@@ -73,7 +80,9 @@ const Schedule = () => {
 
             {/* Content */}
             <div className="flex-1 p-4 bg-white rounded-lg shadow-md">
-              <h2 className="text-lg font-semibold text-gray-800">{schedule.title}</h2>
+              <h2 className="text-lg font-semibold text-gray-800">
+                {schedule.title}
+              </h2>
               <div className="flex items-center text-gray-600 text-sm mt-2">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -118,7 +127,6 @@ const Schedule = () => {
           </div>
         ))}
       </div>
-
       {/* Add Button */}
       <button
         onClick={() => navigate("/addschedule")}
