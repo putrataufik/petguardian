@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthUser } from "../hooks/authHooks"; // Custom hook for user authentication
 
+
 const Schedule = () => {
   const user = useAuthUser(); // Retrieve authenticated user
   const navigate = useNavigate(); // Hook for navigation
@@ -27,8 +28,10 @@ const Schedule = () => {
     },
   ];
 
+const Schedule = () => {
+  const navigate = useNavigate();
   return (
-    <div className="min-h-screen bg-gray-100 p-6 flex flex-col items-center">
+    <div className="min-h-screen bg-gray-100 p-6 pb-24 flex flex-col items-center">
       {/* Header */}
       <div className="w-full flex justify-between items-center mb-4">
         <h1 className="text-xl font-bold text-gray-800">Your Pet Schedule</h1>
@@ -37,6 +40,7 @@ const Schedule = () => {
           <option>Upcoming</option>
           <option>Completed</option>
         </select>
+
       </div>
 
       {/* Timeline */}
@@ -123,7 +127,6 @@ const Schedule = () => {
           </div>
         ))}
       </div>
-
       {/* Add Button */}
       <button
         onClick={() => navigate("/addschedule")}
