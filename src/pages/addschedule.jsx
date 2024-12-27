@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios"; // Pastikan axios sudah terinstal
+import { useAuthUser } from "../hooks/authHooks"; // Pastikan hook ini mengembalikan user yang sudah terautentikasi
 
 const AddSchedule = () => {
+  const user = useAuthUser(); // Mendapatkan data pengguna yang terautentikasi
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     time: "",
@@ -11,24 +13,7 @@ const AddSchedule = () => {
     date: "",
     note: "",
   });
-
-  const [user, setUser] = useState(null); // Untuk menyimpan data pengguna
   const [error, setError] = useState(null);
-
-  useEffect(() => {
-    // Mengambil data user yang sedang login (ini contoh, sesuaikan dengan implementasi auth)
-    const fetchUser = async () => {
-      try {
-        const res = await axios.get("/api/auth/user"); // Ganti dengan endpoint yang sesuai
-        setUser(res.data); // Menyimpan user data
-      } catch (err) {
-        console.error("Error fetching user:", err);
-        setError("User not found");
-      }
-    };
-
-    fetchUser();
-  }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -37,15 +22,17 @@ const AddSchedule = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!user) {
+
+    // Pastikan user sudah terautentikasi atau set UID secara manual jika diperlukan
+    if (!user || !user.uid) {
       setError("User is not authenticated.");
       return;
     }
 
-    // Menambahkan jadwal ke Firestore menggunakan API backend
+    // Menambahkan jadwal ke backend
     try {
       const scheduleData = {
-        uid: user.uid,
+        uid: user.uid,  // Menggunakan UID dari user yang terautentikasi
         event: formData.event,
         location: formData.location,
         time: formData.time,
@@ -53,8 +40,11 @@ const AddSchedule = () => {
         note: formData.note,
       };
 
-      const res = await axios.post(`http://localhost:5000/schedule/${user.uid}`, scheduleData);
+      const res = await axios.post("http://localhost:5000/api/schedules/addschedule", scheduleData);
+      
+      // Cek jika status berhasil (201 Created)
       if (res.status === 201) {
+        console.log("Schedule successfully added:", scheduleData); // Menambahkan log saat berhasil mengirim data
         navigate("/schedule"); // Mengarahkan ke halaman jadwal setelah berhasil menambahkan
       }
     } catch (err) {
