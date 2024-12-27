@@ -1,26 +1,75 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios"; // Pastikan axios sudah terinstal
 
 const AddSchedule = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     time: "",
-    title: "",
+    event: "",
     location: "",
     date: "",
+    note: "",
   });
+
+  const [user, setUser] = useState(null); // Untuk menyimpan data pengguna
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    // Mengambil data user yang sedang login (ini contoh, sesuaikan dengan implementasi auth)
+    const fetchUser = async () => {
+      try {
+        const res = await axios.get("/api/auth/user"); // Ganti dengan endpoint yang sesuai
+        setUser(res.data); // Menyimpan user data
+      } catch (err) {
+        console.error("Error fetching user:", err);
+        setError("User not found");
+      }
+    };
+
+    fetchUser();
+  }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Simpan data di server atau state management
-    console.log("Data submitted:", formData);
-    navigate("/schedule"); // Kembali ke halaman jadwal setelah berhasil disimpan
+    if (!user) {
+      setError("User is not authenticated.");
+      return;
+    }
+
+    // Menambahkan jadwal ke Firestore menggunakan API backend
+    try {
+      const scheduleData = {
+        uid: user.uid,
+        event: formData.event,
+        location: formData.location,
+        time: formData.time,
+        date: formData.date,
+        note: formData.note,
+      };
+
+      const res = await axios.post(`http://localhost:5000/schedule/${user.uid}`, scheduleData);
+      if (res.status === 201) {
+        navigate("/schedule"); // Mengarahkan ke halaman jadwal setelah berhasil menambahkan
+      }
+    } catch (err) {
+      console.error("Error adding schedule:", err);
+      setError("Failed to add schedule.");
+    }
   };
+
+  if (error) {
+    return (
+      <div className="text-center text-red-500">
+        <p>{error}</p>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center p-6">
@@ -46,19 +95,19 @@ const AddSchedule = () => {
           />
         </div>
 
-        {/* Title */}
+        {/* Event */}
         <div>
-          <label htmlFor="title" className="block text-gray-700 font-medium">
-            Title
+          <label htmlFor="event" className="block text-gray-700 font-medium">
+            Event
           </label>
           <input
             type="text"
-            id="title"
-            name="title"
-            value={formData.title}
+            id="event"
+            name="event"
+            value={formData.event}
             onChange={handleInputChange}
             className="w-full mt-2 p-2 border border-gray-300 rounded-lg"
-            placeholder="Enter activity name"
+            placeholder="Enter event name"
             required
           />
         </div>
@@ -93,6 +142,21 @@ const AddSchedule = () => {
             onChange={handleInputChange}
             className="w-full mt-2 p-2 border border-gray-300 rounded-lg"
             required
+          />
+        </div>
+
+        {/* Note */}
+        <div>
+          <label htmlFor="note" className="block text-gray-700 font-medium">
+            Note (Optional)
+          </label>
+          <textarea
+            id="note"
+            name="note"
+            value={formData.note}
+            onChange={handleInputChange}
+            className="w-full mt-2 p-2 border border-gray-300 rounded-lg"
+            placeholder="Enter any additional notes"
           />
         </div>
 
