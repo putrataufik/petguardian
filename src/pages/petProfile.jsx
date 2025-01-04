@@ -3,6 +3,7 @@ import { useAuthUser } from "../hooks/authHooks";
 import { useNavigate } from "react-router-dom";
 import fotokucing from "../assets/kucing.png";
 import usePetStore from "../hooks/petStore"; // Import store Zustand
+import { FaRegTrashAlt } from "react-icons/fa";
 
 const PetProfile = () => {
   const user = useAuthUser();
@@ -16,9 +17,28 @@ const PetProfile = () => {
     }
   }, [user?.uid, pets.length, fetchPets]);
 
-  // Fungsi untuk handle klik pet card
-  const handleCardClick = (petId) => {
-    navigate(`/detailpetprofile/${petId}`); // Navigasi ke halaman detail pet
+  // Fungsi untuk menghapus pet
+  const handleDeletePet = async (petId) => {
+    try {
+      const response = await fetch(`http://localhost:5000/api/pets/deletePet/${petId}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to delete pet");
+      }
+
+      // Filter pet yang dihapus dari local state
+      fetchPets(user.uid); // Refresh pet data setelah penghapusan berhasil
+    } catch (error) {
+      console.error("Error deleting pet:", error);
+      alert("Failed to delete pet. Please try again.");
+    }
+  };
+
+  // Fungsi untuk menavigasi ke detail pet profile
+  const handlePetClick = (petId) => {
+    navigate(`/detailPetProfile/${petId}`); // Menavigasi ke halaman detail dengan petId
   };
 
   return (
@@ -35,13 +55,22 @@ const PetProfile = () => {
         pets.map((pet) => (
           <div
             key={pet.petId}
-            onClick={() => handleCardClick(pet.petId)}
             className="mt-6 w-full max-w-md flex items-center bg-[#1D1D1D] rounded-r-lg overflow-hidden cursor-pointer"
+            onClick={() => handlePetClick(pet.petId)} // Add click event to navigate to pet detail
           >
             <img src={fotokucing} alt="Pet" className="w-1/3 object-cover" />
             <div className="p-4 flex-grow text-white">
               <h2 className="text-lg font-bold text-white">{pet.name || "Unnamed Pet"}</h2>
             </div>
+            <button
+              onClick={(e) => {
+                e.stopPropagation(); // Prevent triggering the onClick event for navigation
+                handleDeletePet(pet.petId);
+              }}
+              className="bg-red-500 text-white px-4 py-2 rounded ml-2 hover:bg-red-600"
+            >
+               <FaRegTrashAlt />
+            </button>
           </div>
         ))
       ) : (
