@@ -2,13 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useAuthUser } from "../hooks/authHooks"; // Import hook untuk mendapatkan data user
+import { FaRegTrashAlt } from "react-icons/fa";
 
 const Schedule = () => {
   const user = useAuthUser(); // Mendapatkan data pengguna yang terautentikasi
   const navigate = useNavigate();
   const [schedules, setSchedules] = useState([]); // Menyimpan data jadwal
 
- 
+  // Fetch jadwal berdasarkan UID
   const fetchSchedules = async () => {
     if (!user || !user.uid) {
       return;
@@ -22,6 +23,21 @@ const Schedule = () => {
       setSchedules(response.data.schedule); // Menyimpan data jadwal yang diterima
     } catch (err) {
       console.error("Error fetching schedules:", err);
+    }
+  };
+
+  // Menghapus jadwal berdasarkan scheduleId
+  const handleDeleteSchedule = async (scheduleId) => {
+    try {
+      const response = await axios.delete(
+        `http://localhost:5000/api/schedules/deleteschedule/${scheduleId}`
+      );
+      console.log("Schedule deleted:", response.data);
+      // Setelah berhasil menghapus, lakukan fetch ulang data jadwal
+      fetchSchedules();
+    } catch (error) {
+      console.error("Error deleting schedule:", error);
+      alert("Failed to delete schedule. Please try again.");
     }
   };
 
@@ -117,6 +133,17 @@ const Schedule = () => {
                   </svg>
                   {schedule.date}
                 </div>
+
+                {/* tombol Delete */}
+                <div className="absolute top-4 right-4">
+                  <button
+                    onClick={() => handleDeleteSchedule(schedule.scheduleID)}
+                    className="bg-red-500 text-white w-7 h-7 rounded flex items-center justify-center hover:bg-red-600"
+                  >
+                    <FaRegTrashAlt />
+                  </button>
+                </div>
+
               </div>
             </div>
           ))
@@ -125,7 +152,7 @@ const Schedule = () => {
         )}
       </div>
 
-      {/* Button Add Schedule */}
+      {/* tombol add schedule*/}
       <button
         onClick={handleAddSchedule}
         className="fixed bottom-20 right-6 w-14 h-14 bg-pink-500 rounded-full text-white text-2xl shadow-lg"
