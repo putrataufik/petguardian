@@ -1,15 +1,14 @@
 import React, { useState } from "react";
-import { useAuthUser } from "../hooks/authHooks";
 import { useNavigate } from "react-router-dom";
-import NavbarBottom from "../components/NavbarBottom";
 import uploadImage from "../assets/uploadImagge.png";
+import { Button } from "@material-tailwind/react";
 
 const AiDetection = () => {
-  const user = useAuthUser();
-  const navigate = useNavigate();
-
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewImage, setPreviewImage] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate();
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -21,41 +20,44 @@ const AiDetection = () => {
     }
   };
 
-  const handleIdentifyBreed = () => {
+  const handleIdentifyBreed = async () => {
     if (selectedFile) {
-      console.log("Identify Pet Breed:", selectedFile);
-    } else {
-      console.warn("No file selected for Identify Pet Breed.");
-    }
-  };
+      setLoading(true);
 
-  const handleCheckHealth = () => {
-    if (selectedFile) {
-      console.log("Check for Health Issues:", selectedFile);
-    } else {
-      console.warn("No file selected for Check for Health Issues.");
-    }
-  };
+      const formData = new FormData();
+      formData.append("image", selectedFile);
 
-  const handleGrooming = () => {
-    if (selectedFile) {
-      console.log("Let's Grooming:", selectedFile);
+      try {
+        const response = await fetch("http://localhost:5000/api/gemini/detect-animal-breed", {
+          method: "POST",
+          body: formData,
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+          navigate("/result", {
+            state: { result: data.response, previewImage }, // Kirim hasil dan gambar
+          });
+        } else {
+          alert(data.error || "Failed to identify the pet breed.");
+        }
+      } catch (error) {
+        console.error("Error:", error);
+        alert("An error occurred while identifying the pet breed.");
+      } finally {
+        setLoading(false);
+      }
     } else {
-      console.warn("No file selected for Let's Grooming.");
+      alert("Please select an image first.");
     }
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 p-6 flex flex-col items-center">
-      {/* Header */}
-
-
-      {/* Main Content */}
+    <div className="min-h-screen bg-gray-100 p-6 flex flex-col items-center mb-24">
       <h1 className="text-2xl font-bold text-center mt-6">
         Get to know your pet with <span className="text-pink-500">Petguard</span>
       </h1>
 
-      {/* Drag and Drop Box */}
       <div className="border-2 border-dashed border-gray-400 rounded-lg p-6 mt-8 flex flex-col items-center w-80 relative">
         <img src={uploadImage} alt="Upload" className="w-10 h-10 mb-4" />
         <p className="text-gray-600">Drop Your .png or .jpg file here!</p>
@@ -90,30 +92,16 @@ const AiDetection = () => {
         </div>
       )}
 
-      {/* Buttons */}
       <div className="flex flex-row items-center justify-center mt-4 gap-4 w-full">
-        <button
-          className="bg-black text-white py-3 px-4 rounded hover:bg-gray-800 w-full md:w-64 h-16 text-base font-bold"
+      <Button
+          className="w-full md:w-64 h-16 text-base font-bold"
           onClick={handleIdentifyBreed}
+          loading={loading} // Menambahkan properti loading
+          loadingText="Identifying..."
         >
-          Identify Your Pet
-        </button>
-        {/* <button
-          className="bg-pink-500 text-white py-3 px-4 rounded hover:bg-pink-600 w-full md:w-64 h-16 text-base font-bold"
-          onClick={handleCheckHealth}
-        >
-          Check for Health Issues
-        </button> */}
+          {loading ? "Identifying..." : "Identify Your Pet"}
+        </Button>
       </div>
-
-      {/* <div className="flex flex-row items-center justify-center mt-8 w-full">
-        <button
-          className="bg-gray-300 text-gray-600 py-3 px-4 rounded cursor-not-allowed w-full md:w-64 h-14 text-base font-bold"
-          onClick={handleGrooming}
-        >
-          Let's Grooming
-        </button>
-      </div> */}
     </div>
   );
 };

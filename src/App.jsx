@@ -10,6 +10,7 @@ import Subscribe from "./pages/subscribe";
 import AddPet from "./pages/addPet";
 import AddSchedule from "./pages/addschedule";
 import NavbarBottom from "./components/NavbarBottom"; // Import NavbarBottom
+import ResultPage from "./pages/resultPage";
 import React from "react";
 
 // Layout untuk halaman dengan NavbarBottom
@@ -35,6 +36,7 @@ function App() {
       <Route path="/" element={<AuthLayout><SignIn /></AuthLayout>} />
       <Route path="/signup" element={<AuthLayout><SignUp /></AuthLayout>} />
       <Route path="/detailpetprofile/:petId" element={<AuthLayout><DetailPetProfile /></AuthLayout>} />
+     
 
       {/* Halaman dengan NavbarBottom */}
       <Route path="/aidetection" element={<MainLayout><AiDetection /></MainLayout>} />
@@ -43,8 +45,8 @@ function App() {
       <Route path="/userProfile" element={<MainLayout><UserProfile /></MainLayout>} />
       <Route path="/subscribe" element={<MainLayout><Subscribe /></MainLayout>} />
       <Route path="/addPet" element={<MainLayout><AddPet /></MainLayout>} />
-<Route path="/addSchedule" element={<MainLayout><AddSchedule /></MainLayout>} />
-                                          
+      <Route path="/addSchedule" element={<MainLayout><AddSchedule /></MainLayout>} />
+      <Route path="/result" element={<MainLayout><ResultPage /></MainLayout>} />            
     </Routes>
   );
 }

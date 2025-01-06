@@ -45,7 +45,7 @@ function SignIn() {
       const token = await result.user.getIdToken();
 
       const response = await fetch(
-        "http://localhost:5000/api/auth/login/google",
+        "http://localhost:5000/api/auth/google",
         {
           method: "POST",
           headers: {
