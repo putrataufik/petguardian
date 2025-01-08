@@ -1,10 +1,12 @@
 import React, { useEffect } from "react";
 import { useAuthUser } from "../hooks/authHooks";
-// import BurgerMenu from '../components/burgerMenu';
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import arrowLeft from "../assets/arrowLeft.png"; // Import gambar panah kiri
 
 const Subscribe = () => {
   const user = useAuthUser(); // Custom hook untuk mendapatkan user
+  const navigate = useNavigate(); // Untuk navigasi ke halaman sebelumnya
 
   // Muat script Snap secara dinamis
   useEffect(() => {
@@ -62,8 +64,20 @@ const Subscribe = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 p-6 flex flex-col items-center">
-      <h1 className="text-xl font-semibold mb-4">PetGuardian Plus</h1>
+    <div className="min-h-screen bg-gray-100 p-6 flex flex-col items-center relative">
+      {/* Icon Panah Kiri */}
+      <button
+        onClick={() => navigate(-1)} // Navigasi ke halaman sebelumnya
+        className="absolute top-6 left-6 flex items-center mb-20"
+      >
+        <img
+          src={arrowLeft}
+          alt="Back"
+          className="w-10 h-10 mr-2"
+        />
+      </button>
+
+      <h1 className="text-xl font-semibold mb-4 mt-14">PetGuardian Plus</h1>
       <p className="text-3xl font-bold text-gray-800 mb-2">
         Rp. 35.000 / bulan
       </p>

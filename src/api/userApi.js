@@ -10,6 +10,6 @@ export const getUserByUID = async (uid) => {
 };
 
 export const updateUserByUID = async (uid, formData) => {
-  const response = await axios.put(`${API_BASE_URL}/users/update/${uid}`, formData);
+  const response = await axios.post(`${API_BASE_URL}/users/updatedata/${uid}`, formData);
   return response.data;
 };

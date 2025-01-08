@@ -9,7 +9,6 @@ const PetProfile = () => {
   const user = useAuthUser();
   const navigate = useNavigate();
   const { pets, loading, error, fetchPets } = usePetStore(); // Ambil data pets dari store Zustand
-
   // Fetch pets saat komponen dimuat
   useEffect(() => {
     if (user?.uid && pets.length === 0) {
@@ -49,8 +48,8 @@ const PetProfile = () => {
 
       {loading && pets.length === 0 ? (
         <p className="mt-6 text-gray-500">Loading pets...</p>
-      ) : error ? (
-        <p className="mt-6 text-red-600">{error}</p>
+      ) : error === "Failed to fetch pets." ? (
+        <p className="mt-6 text-gray-500">Silakan tambahkan hewan peliharaan anda</p>
       ) : pets.length > 0 ? (
         pets.map((pet) => (
           <div

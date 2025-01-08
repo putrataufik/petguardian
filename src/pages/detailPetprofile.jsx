@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useAuthUser } from "../hooks/authHooks";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import axios from "axios";
 import fotokucing from "../assets/kucing.png"; // Ganti dengan path gambar yang sesuai
 

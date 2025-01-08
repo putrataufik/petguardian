@@ -18,7 +18,7 @@ const usePetStore = create(
           set({ pets: response.data.pets, loading: false });
         } catch (error) {
           console.error("Error fetching pets:", error);
-          set({ error: "Failed to fetch pets.", loading: false });
+          set({ error: "Failed to fetch pets.", loading: false, });
         }
       },
       
