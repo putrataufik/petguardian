@@ -3,11 +3,12 @@ import SignIn from "./pages/signIn";
 import SignUp from "./pages/signUp";
 import AiDetection from "./pages/aiDetection";
 import Schedule from "./pages/schedule";
+import DetailSchedule from "./pages/detailSchedule";
 import PetProfile from "./pages/petProfile";
 import UserProfile from "./pages/userProfile";
 import DetailPetProfile from "./pages/detailPetprofile";
 import Subscribe from "./pages/subscribe";
-import AddPet from "./pages/addPet";
+import AddPet from "./pages/addpet";
 import AddSchedule from "./pages/addschedule";
 import NavbarBottom from "./components/NavbarBottom"; // Import NavbarBottom
 import ResultPage from "./pages/resultPage";
@@ -36,6 +37,11 @@ function App() {
       <Route path="/" element={<AuthLayout><SignIn /></AuthLayout>} />
       <Route path="/signup" element={<AuthLayout><SignUp /></AuthLayout>} />
       <Route path="/detailpetprofile/:petId" element={<AuthLayout><DetailPetProfile /></AuthLayout>} />
+      <Route path="/detailSchedule/:scheduleId" element={<AuthLayout><DetailSchedule /></AuthLayout>} />
+      <Route path="/addPet" element={<AuthLayout><AddPet /></AuthLayout>} />
+      <Route path="/result" element={<AuthLayout><ResultPage /></AuthLayout>} />            
+      <Route path="/subscribe" element={<AuthLayout><Subscribe /></AuthLayout>} />
+      <Route path="/addSchedule" element={<AuthLayout><AddSchedule /></AuthLayout>} />
      
 
       {/* Halaman dengan NavbarBottom */}
@@ -43,10 +49,6 @@ function App() {
       <Route path="/schedule" element={<MainLayout><Schedule /></MainLayout>} />
       <Route path="/petprofile" element={<MainLayout><PetProfile /></MainLayout>} />
       <Route path="/userProfile" element={<MainLayout><UserProfile /></MainLayout>} />
-      <Route path="/subscribe" element={<MainLayout><Subscribe /></MainLayout>} />
-      <Route path="/addPet" element={<MainLayout><AddPet /></MainLayout>} />
-      <Route path="/addSchedule" element={<MainLayout><AddSchedule /></MainLayout>} />
-      <Route path="/result" element={<MainLayout><ResultPage /></MainLayout>} />            
     </Routes>
   );
 }

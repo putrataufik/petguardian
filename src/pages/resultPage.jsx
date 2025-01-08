@@ -1,6 +1,6 @@
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-
+import arrowLeft from "../assets/arrowLeft.png"; // Import gambar panah kiri
 const ResultPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -108,7 +108,17 @@ const ResultPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-100 p-6 flex flex-col items-center mb-24">
-      <h1 className="text-2xl font-bold text-center mb-6">
+      <button
+              onClick={() => navigate(-1)} // Navigasi ke halaman sebelumnya
+              className="absolute top-6 left-6 flex items-center mb-20"
+            >
+              <img
+                src={arrowLeft}
+                alt="Back"
+                className="w-10 h-10 mr-2"
+              />
+            </button>
+      <h1 className="text-2xl font-bold text-center mb-6 mt-14 ">
         Results from <span className="text-pink-500">Petguard</span>
       </h1>
 

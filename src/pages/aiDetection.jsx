@@ -53,7 +53,7 @@ const AiDetection = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 p-6 flex flex-col items-center mb-24">
+    <div className="min-h-screen bg-gray-100 p-6 flex flex-col items-center mb-4">
       <h1 className="text-2xl font-bold text-center mt-6">
         Get to know your pet with <span className="text-pink-500">Petguard</span>
       </h1>
