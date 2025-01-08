@@ -130,17 +130,8 @@ const Schedule = () => {
   return (
     <div className="min-h-screen bg-gray-100 p-6 pb-24 flex flex-col items-center">
       {/* Header */}
-      <div className="w-full flex justify-between items-center mb-4">
+      <div className="w-full flex justify-center items-center mb-6 ">
         <h1 className="text-xl font-bold text-gray-800">Your Pet Schedule</h1>
-        <select
-          className="border border-gray-300 rounded-lg p-2 text-gray-600"
-          value={filter} // Menampilkan nilai filter yang dipilih
-          onChange={handleFilterChange} // Menangani perubahan filter
-        >
-          <option value="All">All</option>
-          <option value="Completed">Completed</option>
-          <option value="Not Completed">Not Completed</option>
-        </select>
       </div>
 
       {/* Card full */}
