@@ -22,15 +22,15 @@ const Subscribe = () => {
   }, []);
 
   const handleOrderNow = async () => {
-    console.log("");
     console.log("name " + user.displayName);
-    console.log("name " + user.email);
+    console.log("email " + user.email);
     try {
       const response = await axios.post(
         `http://localhost:5000/api/subscriptions/create`,
         {
           first_name: user.displayName,
           email: user.email,
+          user_id: user.uid,
         }
       );
       const { token } = response.data;

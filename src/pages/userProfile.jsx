@@ -5,6 +5,7 @@ import ProfileCard from "../components/profileCard";
 import EditProfileForm from "../components/editProfileForm";
 import { Button, Card, Typography } from "@material-tailwind/react";
 import { useNavigate } from "react-router-dom";
+import crownIcon from "../assets/king.png";
 
 const UserProfile = () => {
   const user = useAuthUser();
@@ -37,6 +38,7 @@ const UserProfile = () => {
           `http://localhost:5000/api/users/subscriptionsstatus/${user.uid}`
         );
         const data = await response.json();
+        console.log(data);
         setSubscriptionStatus(data);
       } catch (err) {
         console.error("Error fetching subscription status:", err);
@@ -90,7 +92,9 @@ const UserProfile = () => {
             formData={formData}
             handleInputChange={handleInputChange}
             handleSave={handleSave}
+
           />
+
           {isEditing && (
             <EditProfileForm
               open={isEditing}
@@ -107,34 +111,39 @@ const UserProfile = () => {
       {subscriptionStatus && (
         <div className="mt-6 w-full max-w-md">
           {subscriptionStatus.isActive ? (
-            <Card className="p-6 bg-green-100 border border-green-400 rounded-md">
-              <Typography className="text-green-700 text-lg font-bold">
-                Akun Premium
-              </Typography>
-              <Typography className="text-gray-700 mt-2">
-                <strong>Subscription Date:</strong>{" "}
-                {new Date(subscriptionStatus.subscriptionDate).toLocaleDateString()}
-              </Typography>
-              <Typography className="text-gray-700">
-                <strong>Expiry Date:</strong>{" "}
-                {new Date(subscriptionStatus.expiryDate).toLocaleDateString()}
-              </Typography>
+            <Card className="p-6 bg-gray-900 rounded-3xl mx-4">
+              <div className="flex gap-6 items-center">
+                <div>
+                  <img src={crownIcon} alt="" className="w-12 mb-2"/>
+                </div>
+
+              <div>
+
+                <Typography className="text-[#f1c63b] text-lg font-bold">
+                  Akun Premium
+                </Typography>
+                <Typography className="text-white mt-2">
+                  <strong>Expiry Date:</strong>{" "}
+                  {new Date(subscriptionStatus.expiryDate).toLocaleDateString()}
+                </Typography>
+              </div>
+              </div>
             </Card>
           ) : (
-            <Card className="p-6 bg-black-100 border border-blue-gray-900 rounded-md">
+            <Card className="p-6 bg-white rounded-3xl mx-4 shadow-xl">
               <div className="flex items-center gap-3">
                 <div className="text-pink-700 text-3xl">👑</div>
-                <Typography className="text-pink-700 text-lg font-bold">
+                <Typography className="text-pink-300 text-lg font-bold">
                   Upgrade to PetGuardian Plus
                 </Typography>
               </div>
-              <Typography className="text-gray-700 mt-2">
+              <Typography className="text-gray-600 mt-2">
                 Nikmati fitur premium hanya dengan <strong>Rp. 35.000/bln</strong>
               </Typography>
               <Button
                 color="pink"
                 variant="filled"
-                className="mt-4"
+                className="mt-4 mb-4"
                 onClick={() => navigate("/subscribe")}
               >
                 Lihat Detail
@@ -143,15 +152,6 @@ const UserProfile = () => {
           )}
         </div>
       )}
-
-      <Button
-        onClick={handleLogout}
-        color="red"
-        variant="filled"
-        className="mt-6"
-      >
-        Logout
-      </Button>
     </div>
   );
 };
