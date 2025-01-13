@@ -9,7 +9,6 @@ import crownIcon from "../assets/king.png";
 
 const UserProfile = () => {
   const user = useAuthUser();
-  const logout = useLogout();
   const navigate = useNavigate();
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -34,7 +33,6 @@ const UserProfile = () => {
     
     const fetchSubscription = async () => {
       try {
-
         const subscriptionStatus = await getSubscriptionStatusByUID(user.uid);
         console.log("Status Langganan:", subscriptionStatus);
         setSubscriptionStatus(subscriptionStatus);
@@ -49,9 +47,6 @@ const UserProfile = () => {
     }
   }, [user]);
 
-  const handleLogout = async () => {
-    await logout();
-  };
 
   const toggleEditMode = () => {
     setIsEditing(!isEditing);

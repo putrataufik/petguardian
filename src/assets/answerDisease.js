@@ -45,7 +45,7 @@ Ringworm disebabkan oleh jamur yang hidup dengan mengonsumsi protein pada lapisa
 Namun, mohon maaf, hanya cara tersebut yang dapat saya berikan untuk mengobati penyakit kulit yang dialami oleh hewan peliharaan Anda. Jika ingin diagnosa lebih pasti atau memberikan obat lainnya, segera bawa hewan peliharaan Anda ke klinik hewan terdekat.
 `;
 
-fleaAllergyCat = `Hewan peliharaan Anda sedang mengalami penyakit kulit **Flea Allergy**. Penyakit ini disebabkan oleh kutu pinjal yang merupakan jenis kutu yang berukuran kecil, berwarna cokelat kehitaman, dan tubuhnya pipih. Selain karena ukurannya yang kecil, pinjal dapat bergerak cepat di antara rambut kucing dan dapat meloncat tinggi sehingga sulit ditangkap.
+const fleaAllergyCat = `Hewan peliharaan Anda sedang mengalami penyakit kulit **Flea Allergy**. Penyakit ini disebabkan oleh kutu pinjal yang merupakan jenis kutu yang berukuran kecil, berwarna cokelat kehitaman, dan tubuhnya pipih. Selain karena ukurannya yang kecil, pinjal dapat bergerak cepat di antara rambut kucing dan dapat meloncat tinggi sehingga sulit ditangkap.
 
 Pinjal hidup dengan menghisap darah kucing. Pada kucing yang alergi terhadap air liur pinjal, bekas gigitan pinjal dapat terlihat bengkak dan kemerahan. Reaksi alergi kucing terhadap pinjal ini disebut *flea allergic dermatitis*. Tanda-tanda alergi ini adalah kulit kucing kelihatan kemerahan dan ada rasa gatal, kadang juga ada terlihat bentol-bentol dan kerak pada kulit.
 
@@ -57,13 +57,13 @@ Terdapat beberapa cara untuk mengatasi dan merawat penyakit kulit tersebut:
 
 Namun, mohon maaf sebelumnya hanya cara itu yang dapat saya berikan untuk mengobati penyakit kulit yang dialami oleh hewan peliharaan Anda. Jika Anda ingin melaksanakan diagnosa pasti dan memberikan obat atau antibiotik lainnya, segera langsung menghubungi dan membawa hewan peliharaan Anda ke klinik hewan terdekat.`;
 
-scabiesCat = `Kucing anda sedang mengalami penyakit kulit **Scabies**. Scabies pada kucing adalah **penyakit kulit** yang disebabkan oleh tungau. Tungau ini, yang dikenal sebagai _Sarcoptes scabiei_, **menyebabkan iritasi dan gatal-gatal** pada kulit kucing. Penularan scabies pada kucing umumnya terjadi melalui kontak langsung dengan hewan yang terinfeksi. Tungau akan **menggali ke dalam kulit** kucing untuk bertelur, menyebabkan reaksi alergi dan peradangan.
+const scabiesCat = `Kucing anda sedang mengalami penyakit kulit **Scabies**. Scabies pada kucing adalah **penyakit kulit** yang disebabkan oleh tungau. Tungau ini, yang dikenal sebagai _Sarcoptes scabiei_, **menyebabkan iritasi dan gatal-gatal** pada kulit kucing. Penularan scabies pada kucing umumnya terjadi melalui kontak langsung dengan hewan yang terinfeksi. Tungau akan **menggali ke dalam kulit** kucing untuk bertelur, menyebabkan reaksi alergi dan peradangan.
 
 Pengobatan scabies pada kucing melibatkan **penggunaan obat antiparasit**, seperti spot-on atau shampo anti-tungau. Konsultasikan dengan dokter hewan untuk mendapatkan **perawatan yang tepat** sesuai dengan kondisi kucing Anda.
 
 Namun, mohon maaf sebelumnya hanya cara itu yang dapat saya berikan untuk mengobati penyakit kulit yang dialami oleh hewan peliharaan anda. Jika anda ingin melaksanakan diagnosa pasti dan memberikan obat atau antibiotik lainnya, segera langsung menghubungi dan membawa hewan peliharaan Anda ke klinik hewan terdekat.`;
 
-dermatitisCat = `Kucing anda sedang mengalami penyakit kulit **Dermatitis**. Dermatitis adalah penyakit kulit yang disebabkan oleh reaksi alergi terhadap produk perawatan, makanan, dan gangguan lingkungan, seperti serbuk sari atau gigitan kutu. Menggaruk kepala atau leher adalah tanda umum dari alergi makanan. Gejala alergi lainnya termasuk menjilat pada kaki atau menggaruk telinga atau pangkal ekor.
+const dermatitisCat = `Kucing anda sedang mengalami penyakit kulit **Dermatitis**. Dermatitis adalah penyakit kulit yang disebabkan oleh reaksi alergi terhadap produk perawatan, makanan, dan gangguan lingkungan, seperti serbuk sari atau gigitan kutu. Menggaruk kepala atau leher adalah tanda umum dari alergi makanan. Gejala alergi lainnya termasuk menjilat pada kaki atau menggaruk telinga atau pangkal ekor.
 
 Terdapat beberapa cara untuk mengatasi dan merawat penyakit kulit tersebut:
 
@@ -73,7 +73,7 @@ Terdapat beberapa cara untuk mengatasi dan merawat penyakit kulit tersebut:
 
 Namun, mohon maaf sebelumnya hanya cara itu yang dapat saya berikan untuk mengobati penyakit kulit yang dialami oleh hewan peliharaan anda. Jika anda ingin melaksanakan diagnosa pasti dan memberikan obat atau antibiotik lainnya, segera langsung menghubungi dan membawa hewan peliharaan Anda ke klinik hewan terdekat.`;
 
-ringwormCat = `Kucing anda sedang mengalami penyakit kulit **Ringworm**. Ringworm atau infeksi jamur pada kucing adalah infeksi jamur yang memakan keratin pada rambut, kulit dan kuku kucing. Penyakit ini disebut “ringworm” karena jamurnya menciptakan lesi seperti cincin melingkar pada kulit kucing. Umumnya, jamur kucing ini ditemukan di bagian kepala, telinga, punggung dan kaki depan, tapi tidak menutup kemungkinan untuk terjadi di bagian lainnya.
+const ringwormCat = `Kucing anda sedang mengalami penyakit kulit **Ringworm**. Ringworm atau infeksi jamur pada kucing adalah infeksi jamur yang memakan keratin pada rambut, kulit dan kuku kucing. Penyakit ini disebut “ringworm” karena jamurnya menciptakan lesi seperti cincin melingkar pada kulit kucing. Umumnya, jamur kucing ini ditemukan di bagian kepala, telinga, punggung dan kaki depan, tapi tidak menutup kemungkinan untuk terjadi di bagian lainnya.
 
 Cara mengobati kucing jamuran yang paling umum adalah memberikan obat-obatan anti jamur dan menggunakan shampoo anti jamur. Selain itu, sebaiknya mengisolasikan kucing Anda di satu ruangan yang mudah dibersihkan agar ia tidak menularkan jamur kucing ke orang-orang di rumah, karena sporanya yang sangat mudah menyebar. Untuk kucing dengan rambut yang tebal, disarankan untuk mencukur rambutnya untuk memudahkan mengatasi jamurnya dan memudahkan untuk mencucinya dengan bersih.
 

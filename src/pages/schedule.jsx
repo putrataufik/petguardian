@@ -212,15 +212,6 @@ const Schedule = () => {
                   </div>
                 </div>
 
-                <div className="flex justify-end">
-                  <button
-                    onClick={() => handleEditSchedule(schedule.scheduleID)}
-                    className="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50 transition-all duration-200"
-                  >
-                    Edit
-                  </button>
-                </div>
-
 
                 {/* tombol Delete */}
                 <div>
