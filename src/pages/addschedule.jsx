@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios"; // Pastikan axios sudah terinstal
 import { useAuthUser } from "../hooks/authHooks"; // Pastikan hook ini mengembalikan user yang sudah terautentikasi
-
+import arrowLeft from "../assets/arrowLeft.png";
 const AddSchedule = () => {
   const user = useAuthUser(); // Mendapatkan data pengguna yang terautentikasi
   const navigate = useNavigate();
@@ -41,7 +41,7 @@ const AddSchedule = () => {
       };
 
       const res = await axios.post("http://localhost:5000/api/schedules/addschedule", scheduleData);
-      
+
       // Cek jika status berhasil (201 Created)
       if (res.status === 201) {
         console.log("Schedule successfully added:", scheduleData); // Menambahkan log saat berhasil mengirim data
@@ -63,7 +63,17 @@ const AddSchedule = () => {
 
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center p-6">
-      <h1 className="text-2xl font-bold text-gray-800 mb-6">Add New Schedule</h1>
+      <button
+        onClick={() => navigate(-1)} // Navigasi ke halaman sebelumnya
+        className="absolute top-6 left-6 flex items-center mb-20"
+      >
+        <img
+          src={arrowLeft}
+          alt="Back"
+          className="w-10 h-10 mr-2"
+        />
+      </button>
+      <h1 className="text-2xl font-bold text-gray-800 my-8">Add New Schedule</h1>
 
       <form
         onSubmit={handleSubmit}
@@ -80,9 +90,10 @@ const AddSchedule = () => {
             name="time"
             value={formData.time}
             onChange={handleInputChange}
-            className="w-full mt-2 p-2 border border-gray-300 rounded-lg"
+            className="w-full mt-2 p-2 border border-gray-300 rounded-lg focus:border-[#F8567B] focus:ring-[#F8567B] focus:outline-none"
             required
           />
+
         </div>
 
         {/* Event */}
@@ -96,7 +107,7 @@ const AddSchedule = () => {
             name="event"
             value={formData.event}
             onChange={handleInputChange}
-            className="w-full mt-2 p-2 border border-gray-300 rounded-lg"
+            className="w-full mt-2 p-2 border border-gray-300 rounded-lg focus:border-[#F8567B] focus:ring-[#F8567B] focus:outline-none"
             placeholder="Enter event name"
             required
           />
@@ -113,7 +124,7 @@ const AddSchedule = () => {
             name="location"
             value={formData.location}
             onChange={handleInputChange}
-            className="w-full mt-2 p-2 border border-gray-300 rounded-lg"
+            className="w-full mt-2 p-2 border border-gray-300 rounded-lg focus:border-[#F8567B] focus:ring-[#F8567B] focus:outline-none"
             placeholder="Enter location"
             required
           />
@@ -130,7 +141,7 @@ const AddSchedule = () => {
             name="date"
             value={formData.date}
             onChange={handleInputChange}
-            className="w-full mt-2 p-2 border border-gray-300 rounded-lg"
+            className="w-full mt-2 p-2 border border-gray-300 rounded-lg focus:border-[#F8567B] focus:ring-[#F8567B] focus:outline-none"
             required
           />
         </div>
@@ -145,7 +156,7 @@ const AddSchedule = () => {
             name="note"
             value={formData.note}
             onChange={handleInputChange}
-            className="w-full mt-2 p-2 border border-gray-300 rounded-lg"
+            className="w-full mt-2 p-2 border border-gray-300 rounded-lg focus:border-[#F8567B] focus:ring-[#F8567B] focus:outline-none"
             placeholder="Enter any additional notes"
           />
         </div>
@@ -153,7 +164,7 @@ const AddSchedule = () => {
         {/* Submit Button */}
         <button
           type="submit"
-          className="w-full bg-pink-500 text-white font-medium py-2 rounded-lg hover:bg-pink-600 transition"
+          className="w-full bg-[#F8567B] text-white font-medium py-2 rounded-lg hover:bg-pink-600 transition"
         >
           Save Schedule
         </button>
