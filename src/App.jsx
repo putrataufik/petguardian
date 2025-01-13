@@ -13,6 +13,7 @@ import AddSchedule from "./pages/addschedule";
 import EditSchedule from "./pages/EditSchedule";
 import NavbarBottom from "./components/NavbarBottom"; // Import NavbarBottom
 import ResultPage from "./pages/resultPage";
+import Grooming from "./pages/grooming";
 import React from "react";
 
 // Layout untuk halaman dengan NavbarBottom
@@ -41,14 +42,15 @@ function App() {
       <Route path="/detailSchedule/:scheduleId" element={<AuthLayout><DetailSchedule /></AuthLayout>} />
       <Route path="/addPet" element={<AuthLayout><AddPet /></AuthLayout>} />
       <Route path="/result" element={<AuthLayout><ResultPage /></AuthLayout>} />            
-      <Route path="/subscribe" element={<AuthLayout><Subscribe /></AuthLayout>} />
       <Route path="/addSchedule" element={<AuthLayout><AddSchedule /></AuthLayout>} />
       <Route path="/editschedule/:scheduleId" element={<AuthLayout><EditSchedule /></AuthLayout>} />
+      <Route path="/subscribe" element={<AuthLayout><Subscribe /></AuthLayout>} />
      
       
      
 
       {/* Halaman dengan NavbarBottom */}
+      <Route path="/grooming" element={<MainLayout><Grooming /></MainLayout>} />
       <Route path="/aidetection" element={<MainLayout><AiDetection /></MainLayout>} />
       <Route path="/schedule" element={<MainLayout><Schedule /></MainLayout>} />
       <Route path="/petprofile" element={<MainLayout><PetProfile /></MainLayout>} />

@@ -15,7 +15,6 @@ const AiDetection = () => {
   const [previewImage, setPreviewImage] = useState(null);
   const [loading, setLoading] = useState(false);
   const [usageToken, setUsageToken] = useState(0);
-  const [diseaseResult, setDiseaseResult] = useState(null);
 
   const navigate = useNavigate();
   const user = useAuthUser();
@@ -105,6 +104,8 @@ const AiDetection = () => {
             default:
               diseaseInfo = "Penyakit kulit tidak terdeteksi atau tidak dikenal.";
           }
+        }else{
+          alert("Hewan tidak Diketahui Silahkan Unggah Gambar Peliharaan anda yang lain");
         }
   
         // Navigate to result page dengan membawa data
