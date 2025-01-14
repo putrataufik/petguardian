@@ -76,7 +76,7 @@ const Schedule = () => {
 
     try {
       await axios.post(
-        `http://localhost:5000/api/schedule/updateschedule/${scheduleID}`,
+        `http://localhost:5000/api/schedules/updateschedule/${scheduleID}`,
         {
           checked: newCheckedState,
         }
