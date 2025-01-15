@@ -1,144 +1,137 @@
-import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import arrowLeft from "../assets/arrowLeft.png"; // Import gambar panah kiri
-const ResultPage = () => {
-  const location = useLocation();
-  const navigate = useNavigate();
-  const { result, previewImage } = location.state || {}; // Mendapatkan data dari state navigate
 
-  if (!result) {
-    // Jika tidak ada data, arahkan kembali ke halaman utama
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-100">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold mb-4">No Result Found</h1>
-          <button
-            onClick={() => navigate("/aidetection")}
-            className="bg-pink-500 text-white py-2 px-4 rounded hover:bg-pink-600"
-          >
-            Go Back
-          </button>
-        </div>
-      </div>
+const formatResponseText = (text) => {
+  const lines = text.split("\n"); // Pisahkan teks berdasarkan newline (\n)
+  const elements = [];
+  let currentList = null; // Untuk menangani <ul> jika ada daftar
+
+  lines.forEach((line, index) => {
+    if (line.startsWith("1.") || line.startsWith("2.") || line.startsWith("3.")) {
+      // Tangani daftar bernomor
+      const listItemText = line.slice(3); // Hapus nomor dan spasi
+      const formattedListItem = listItemText.split(/(\*\*.*?\*\*|\*.*?\*)/).map((part, idx) => {
+        if (part.startsWith("**") && part.endsWith("**")) {
+          return (
+            <strong key={idx}>{part.slice(2, -2)}</strong> // Bold
+          );
+        } else if (part.startsWith("*") && part.endsWith("*")) {
+          return (
+            <em key={idx}>{part.slice(1, -1)}</em> // Italic
+          );
+        } else {
+          return part; // Teks biasa
+        }
+      });
+
+      // Tambahkan item ke dalam daftar <ol>
+      if (!currentList) {
+        currentList = [];
+      }
+      currentList.push(
+        <li key={index} className="mb-2 leading-relaxed">
+          {formattedListItem}
+        </li>
+      );
+    } else {
+      // Jika bukan item daftar
+      if (currentList) {
+        // Jika sebelumnya ada daftar, tutup <ol> dan tambahkan ke elemen
+        elements.push(
+          <ol key={`list-${index}`} className="list-decimal pl-6 mb-4">
+            {currentList}
+          </ol>
+        );
+        currentList = null; // Reset daftar
+      }
+
+      // Pisahkan teks berdasarkan ** (bold) dan * (italic)
+      const parts = line.split(/(\*\*.*?\*\*|\*.*?\*)/);
+      const formattedLine = parts.map((part, idx) => {
+        if (part.startsWith("**") && part.endsWith("**")) {
+          return (
+            <strong key={idx}>{part.slice(2, -2)}</strong> // Bold
+          );
+        } else if (part.startsWith("*") && part.endsWith("*")) {
+          return (
+            <em key={idx}>{part.slice(1, -1)}</em> // Italic
+          );
+        } else {
+          return part; // Teks biasa
+        }
+      });
+
+      // Tambahkan baris ke elemen
+      elements.push(
+        <p key={index} className="mb-4 leading-relaxed">
+          {formattedLine}
+        </p>
+      );
+    }
+  });
+
+  // Tambahkan daftar terakhir jika ada
+  if (currentList) {
+    elements.push(
+      <ol key="final-list" className="list-decimal pl-6 mb-4">
+        {currentList}
+      </ol>
     );
   }
 
-  // Fungsi untuk memformat teks respons menjadi JSX dengan gaya bold dan italic
-  const formatResponseText = (text) => {
-    const lines = text.split("\n"); // Pisahkan teks berdasarkan newline (\n)
-    const elements = [];
-    let currentList = null; // Untuk menangani <ul> jika ada daftar
-  
-    lines.forEach((line, index) => {
-      if (line.startsWith("* ")) {
-        // Jika baris dimulai dengan "* ", berarti ini adalah item daftar
-        const listItemText = line.slice(2); // Hapus tanda "* " di awal
-        const formattedListItem = listItemText.split(/(\*\*.*?\*\*|\*.*?\*)/).map((part, idx) => {
-          if (part.startsWith("**") && part.endsWith("**")) {
-            return (
-              <strong key={idx}>{part.slice(2, -2)}</strong> // Bold
-            );
-          } else if (part.startsWith("*") && part.endsWith("*")) {
-            return (
-              <em key={idx}>{part.slice(1, -1)}</em> // Italic
-            );
-          } else {
-            return part; // Teks biasa
-          }
-        });
-  
-        // Tambahkan item ke dalam daftar <ul>
-        if (!currentList) {
-          currentList = [];
-        }
-        currentList.push(
-          <li key={index} className="mb-2 leading-relaxed">
-            {formattedListItem}
-          </li>
-        );
-      } else {
-        // Jika bukan item daftar
-        if (currentList) {
-          // Jika sebelumnya ada daftar, tutup <ul> dan tambahkan ke elemen
-          elements.push(
-            <ul key={`list-${index}`} className="list-disc pl-6 mb-4">
-              {currentList}
-            </ul>
-          );
-          currentList = null; // Reset daftar
-        }
-  
-        // Pisahkan teks berdasarkan ** (bold) dan * (italic)
-        const parts = line.split(/(\*\*.*?\*\*|\*.*?\*)/);
-        const formattedLine = parts.map((part, idx) => {
-          if (part.startsWith("**") && part.endsWith("**")) {
-            return (
-              <strong key={idx}>{part.slice(2, -2)}</strong> // Bold
-            );
-          } else if (part.startsWith("*") && part.endsWith("*")) {
-            return (
-              <em key={idx}>{part.slice(1, -1)}</em> // Italic
-            );
-          } else {
-            return part; // Teks biasa
-          }
-        });
-  
-        // Tambahkan baris ke elemen
-        elements.push(
-          <p key={index} className="mb-4 leading-relaxed">
-            {formattedLine}
-          </p>
-        );
-      }
-    });
-  
-    // Tambahkan daftar terakhir jika ada
-    if (currentList) {
-      elements.push(
-        <ul key="final-list" className="list-disc pl-6 mb-4">
-          {currentList}
-        </ul>
-      );
-    }
-  
-    return elements;
-  };
-  
+  return elements;
+};
+
+const ResultPage = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const { diseaseInfo, jenisHewan, imageUrl } = location.state || {};
+
+  if (!diseaseInfo || !jenisHewan || !imageUrl) {
+    navigate("/");
+    return null;
+  }
 
   return (
-    <div className="min-h-screen bg-gray-100 p-6 flex flex-col items-center mb-24">
-      <button
-              onClick={() => navigate(-1)} // Navigasi ke halaman sebelumnya
-              className="absolute top-6 left-6 flex items-center mb-20"
-            >
-              <img
-                src={arrowLeft}
-                alt="Back"
-                className="w-10 h-10 mr-2"
-              />
-            </button>
-      <h1 className="text-2xl font-bold text-center mb-6 mt-14 ">
-        Results from <span className="text-pink-500">Petguard</span>
+    <div className="p-8">
+      <h1 className="text-3xl font-semibold text-center text-gray-900 mb-8">
+        Hasil Deteksi Penyakit Kulit
       </h1>
 
-      <img
-        src={previewImage}
-        alt="Uploaded Pet"
-        className="w-64 h-64 object-cover rounded-lg border border-gray-300 mb-6"
-      />
+      <div className="mb-8">
+        <p className="text-md font-bold text-gray-900">
+          <strong>Jenis Hewan:</strong> {jenisHewan}
+        </p>
 
-      <div className="bg-white shadow-md rounded-lg p-4 max-w-md w-full">
-        <h2 className="text-lg font-bold mb-2">Breed Information:</h2>
-        <div className="text-gray-700">{formatResponseText(result)}</div>
+        <div className="flex justify-center mb-6">
+          <img
+            src={imageUrl}
+            alt="Gambar yang diunggah"
+            className="max-w-full max-h-80 object-contain rounded-lg shadow-lg"
+          />
+        </div>
+
+        <p className="text-md font-bold text-gray-900">
+          <strong>Hasil Deteksi:</strong>
+        </p>
+
+        <div className="text-gray-900">
+          {typeof diseaseInfo === "string" ? (
+            <div>{formatResponseText(diseaseInfo)}</div>
+          ) : (
+            <div>{formatResponseText(diseaseInfo.description)}</div>
+          )}
+        </div>
       </div>
 
-      <button
-        onClick={() => navigate("/aidetection")}
-        className="bg-black text-white py-3 px-4 rounded hover:bg-gray-800 mt-6"
-      >
-        Identify Another Pet
-      </button>
+      <div className="text-center">
+        <button
+          onClick={() => navigate("/")}
+          className="px-6 py-3 bg-blue-600 text-white text-lg font-medium rounded-lg shadow-md transition-all hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+        >
+          Kembali ke Halaman Utama
+        </button>
+      </div>
     </div>
   );
 };

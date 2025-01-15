@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom"; // Mengimpor Link dari react-router-dom
-import { AiOutlineCalendar } from "react-icons/ai";
+import { AiFillSchedule } from "react-icons/ai";
 import { MdPets } from "react-icons/md";
 import { FaScissors } from "react-icons/fa6";
 import { BsStars } from "react-icons/bs";
@@ -21,22 +21,22 @@ const NavbarBottom = () => {
   }, [user]);
 
   return (
-    <div className="fixed bottom-0 left-0 w-full bg-[#E0A0AE] flex justify-around items-center py-4 px-6 shadow-md">
+    <div className="fixed bottom-0 left-0 w-full bg-[#E0A0AE] flex justify-around items-center py-4 px-6 shadow-md rounded-t-3xl">
       {/* Grooming Button */}
-      <Link to="/subscribe" className="flex flex-col items-center text-black">
+      <Link to="/grooming" className="flex flex-col items-center text-black">
         <FaScissors size={25} />
       </Link>
 
       {/* Kalender Button */}
-      <Link to="/schedule" className="flex flex-col items-center text-white">
-        <AiOutlineCalendar size={30} />
+      <Link to="/schedule" className="flex flex-col items-center text-black">
+        <AiFillSchedule size={35} />
       </Link>
 
       {/* Center Button */}
       <div className="relative flex items-center justify-center w-1/5">
         <Link
           to="/aidetection"
-          className="absolute -top-12 w-16 h-16 bg-black text-white rounded-full flex flex-col items-center justify-center shadow-xl border-4 border-pink-400 hover:bg-gray-800"
+          className="absolute -top-12 w-16 h-16 bg-black text-white rounded-full flex flex-col items-center justify-center shadow-xl border-4 border-[#F8567B] hover:bg-gray-800"
         >
           <BsStars size={32} />
         </Link>
@@ -44,7 +44,7 @@ const NavbarBottom = () => {
 
       {/* Pet Profile Button */}
       <Link to="/petprofile" className="flex flex-col items-center text-black">
-        <MdPets size={27} />
+        <MdPets size={30} />
       </Link>
 
       {/* User Profile Button */}
