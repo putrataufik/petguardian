@@ -15,7 +15,6 @@ const Schedule = () => {
   const [filter, setFilter] = useState("All"); // Menyimpan pilihan filter
   const [modalOpen, setModalOpen] = useState(false);
   const [scheduleToDelete, setScheduleToDelete] = useState(null);
-  const [scheduleToEdit, setScheduleToEdit] = useState(null);
 
   // Ambil status checkbox dari localStorage atau API jika diperlukan
   useEffect(() => {
@@ -128,11 +127,6 @@ const Schedule = () => {
     navigate("/addschedule"); // Navigasi ke halaman AddSchedule
   };
 
-  const handleEditSchedule = (scheduleId) => {
-    navigate(`/editschedule/${scheduleId}`);
-  };
-  
-
   return (
     <div className="min-h-screen bg-gray-100 p-6 pb-24 flex flex-col items-center">
       {/* Header */}
@@ -211,16 +205,6 @@ const Schedule = () => {
                     {schedule.date}
                   </div>
                 </div>
-
-                <div className="flex justify-end">
-                  <button
-                    onClick={() => handleEditSchedule(schedule.scheduleID)}
-                    className="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50 transition-all duration-200"
-                  >
-                    Edit
-                  </button>
-                </div>
-
 
                 {/* tombol Delete */}
                 <div>
