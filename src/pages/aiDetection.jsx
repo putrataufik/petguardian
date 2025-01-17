@@ -95,6 +95,8 @@ const AiDetection = () => {
             default:
               diseaseInfo = "Penyakit kulit tidak terdeteksi atau tidak dikenal.";
           }
+        }else{
+          alert("Hewan tidak Diketahui Silahkan Unggah Gambar Peliharaan anda yang lain");
         }
 
         // Navigate ke halaman result dengan membawa data
