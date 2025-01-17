@@ -6,8 +6,10 @@ import FileUpload from "../components/FileUpload";
 import PreviewImage from "../components/PreviewImage";
 import RemainingTokens from "../components/RemainingTokens";
 import LoaderButton from "../components/LoaderButton";
-import { scabiesDog, fleaAllergyDog, dermatitisDog ,ringwormDog 
-  , scabiesCat, fleaAllergyCat ,ringwormCat, dermatitisCat
+import { Select, Option } from "@material-tailwind/react";
+import {
+  scabiesDog, fleaAllergyDog, dermatitisDog, ringwormDog,
+  scabiesCat, fleaAllergyCat, ringwormCat, dermatitisCat
 } from "../assets/answerDisease";
 
 const AiDetection = () => {
@@ -15,6 +17,7 @@ const AiDetection = () => {
   const [previewImage, setPreviewImage] = useState(null);
   const [loading, setLoading] = useState(false);
   const [usageToken, setUsageToken] = useState(0);
+  const [selectedAnimal, setSelectedAnimal] = useState(""); // Menyimpan jenis hewan yang dipilih
 
   const navigate = useNavigate();
   const user = useAuthUser();
@@ -35,40 +38,28 @@ const AiDetection = () => {
     }
   };
 
-  const parseBreedResponse = (response) => {
-    const hewanMatch = response.match(/Hewan:\s*(.+)/);
-    const rasMatch = response.match(/Jenis ras:\s*(.+)/);
-    const caraMerawatMatch = response.match(/Cara merawatnya:\s*([\s\S]*)/);
-
-    const jenisHewan = hewanMatch ? hewanMatch[1].trim() : null;
-    const jenisRas = rasMatch ? rasMatch[1].trim() : null;
-    const caraMerawat = caraMerawatMatch ? caraMerawatMatch[1].trim() : null;
-
-    return { jenisHewan, jenisRas, caraMerawat };
-  };
-  
-  const handleDetectDisease = async (jenisHewan) => { 
+  const handleDetectDisease = async (jenisHewan) => {
     const endpoint =
       jenisHewan === "Anjing"
         ? "http://localhost:5000/api/dogskindisease/detectdog"
         : "http://localhost:5000/api/catskindisease/detectcat";
-  
+
     try {
       const formData = new FormData();
       formData.append("image", selectedFile);
-  
+
       const response = await fetch(endpoint, {
         method: "POST",
         body: formData,
       });
-  
+
       const data = await response.json();
       if (response.ok) {
         console.log("Deteksi penyakit berhasil:", data);
-  
+
         const detectedClass = data.response.predictions[0]?.class;
         let diseaseInfo;
-  
+
         // Deteksi penyakit berdasarkan jenis hewan
         if (jenisHewan === "Anjing") {
           switch (detectedClass) {
@@ -104,19 +95,16 @@ const AiDetection = () => {
             default:
               diseaseInfo = "Penyakit kulit tidak terdeteksi atau tidak dikenal.";
           }
-        }else{
-          alert("Hewan tidak Diketahui Silahkan Unggah Gambar Peliharaan anda yang lain");
         }
-  
-        // Navigate to result page dengan membawa data
-        navigate('/result', { 
-          state: { 
+
+        // Navigate ke halaman result dengan membawa data
+        navigate('/result', {
+          state: {
             diseaseInfo,
             jenisHewan,
-            imageUrl: previewImage 
-          } 
+            imageUrl: previewImage
+          }
         });
-  
       } else {
         alert(data.error || "Gagal mendeteksi penyakit kulit.");
       }
@@ -125,49 +113,33 @@ const AiDetection = () => {
       alert("Terjadi kesalahan saat mendeteksi penyakit.");
     }
   };
-  
+
   const handleIdentifyBreed = async () => {
     if (!selectedFile) {
-      alert("Please select an image first.");
+      alert("Silakan pilih gambar terlebih dahulu.");
+      return;
+    }
+
+    if (!selectedAnimal) {
+      alert("Silakan pilih jenis hewan (Anjing atau Kucing).");
       return;
     }
 
     setLoading(true);
-    const formData = new FormData();
-    formData.append("image", selectedFile);
-
     try {
-      const response = await fetch("http://localhost:5000/api/gemini/detect-animal-breed", {
-        method: "POST",
-        body: formData,
-      });
+      // Panggil deteksi penyakit berdasarkan pilihan hewan
+      await handleDetectDisease(selectedAnimal);
 
-      const data = await response.json();
-      if (response.ok) {
-        const { jenisHewan, jenisRas } = parseBreedResponse(data.response);
-
-        console.log("jenis hewan :"+ jenisHewan);
-        console.log("jenis ras :"+ jenisRas);
-        
-        if (jenisHewan) {
-          await handleDetectDisease(jenisHewan);
-
-          const updatedToken = usageToken - 20; // Mengurangi 20 token
-          if (updatedToken >= 0) {
-            await updateUsageToken(userId, updatedToken);
-            setUsageToken(updatedToken);
-          } else {
-            alert("Insufficient usage tokens.");
-          }
-        } else {
-          alert("Jenis hewan tidak terdeteksi.");
-        }
+      const updatedToken = usageToken - 20; // Mengurangi 20 token
+      if (updatedToken >= 0) {
+        await updateUsageToken(userId, updatedToken);
+        setUsageToken(updatedToken);
       } else {
-        alert(data.error || "Failed to identify the pet breed.");
+        alert("Token penggunaan tidak mencukupi.");
       }
     } catch (error) {
       console.error("Error:", error);
-      alert("An error occurred while identifying the pet breed.");
+      alert("Terjadi kesalahan saat mendeteksi penyakit.");
     } finally {
       setLoading(false);
     }
@@ -190,7 +162,18 @@ const AiDetection = () => {
           }}
         />
       )}
+      {/* Select options untuk memilih jenis hewan */}
       <div className="my-4">
+        <Select
+          label="Pilih Jenis Hewan"
+          value={selectedAnimal}
+          onChange={(value) => setSelectedAnimal(value)}
+        >
+          <Option value="Anjing">Anjing</Option>
+          <Option value="Kucing">Kucing</Option>
+        </Select>
+      </div>
+      <div className="mt-40">
         <LoaderButton loading={loading} onClick={handleIdentifyBreed} label="Identify Your Pet" />
       </div>
       <RemainingTokens usageToken={usageToken} />
