@@ -126,8 +126,8 @@ const ResultPage = () => {
 
       <div className="text-center">
         <button
-          onClick={() => navigate("/")}
-          className="px-6 py-3 bg-[#F8567B] text-white text-lg font-medium rounded-lg shadow-md transition-all "
+          onClick={() => navigate("/aidetection")}
+          className="px-6 py-3 bg-blue-600 text-white text-lg font-medium rounded-lg shadow-md transition-all hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
         >
           Kembali ke Halaman Utama
         </button>
