@@ -15,7 +15,6 @@ const Schedule = () => {
   const [filter, setFilter] = useState("All"); // Menyimpan pilihan filter
   const [modalOpen, setModalOpen] = useState(false);
   const [scheduleToDelete, setScheduleToDelete] = useState(null);
-  const [scheduleToEdit, setScheduleToEdit] = useState(null);
 
   // Ambil status checkbox dari localStorage atau API jika diperlukan
   useEffect(() => {
@@ -76,7 +75,7 @@ const Schedule = () => {
 
     try {
       await axios.post(
-        `http://localhost:5000/api/schedule/updateschedule/${scheduleID}`,
+        `http://localhost:5000/api/schedules/updateschedule/${scheduleID}`,
         {
           checked: newCheckedState,
         }
@@ -127,11 +126,6 @@ const Schedule = () => {
   const handleAddSchedule = () => {
     navigate("/addschedule"); // Navigasi ke halaman AddSchedule
   };
-
-  const handleEditSchedule = (scheduleId) => {
-    navigate(`/editschedule/${scheduleId}`);
-  };
-  
 
   return (
     <div className="min-h-screen bg-gray-100 p-6 pb-24 flex flex-col items-center">
@@ -211,7 +205,6 @@ const Schedule = () => {
                     {schedule.date}
                   </div>
                 </div>
-
 
                 {/* tombol Delete */}
                 <div>
