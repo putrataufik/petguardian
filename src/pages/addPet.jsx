@@ -16,8 +16,11 @@ const AddPet = () => {
     const [name, setName] = useState("");
     const [age, setAge] = useState("");
     const [selectedFile, setSelectedFile] = useState(null);
-    const [species, setSpecies] = useState("");
-    const [breed, setBreed] = useState("");
+    const [species, setSpecies] = useState("Tidak diketahui");
+    const [breed, setBreed] = useState("Tidak diketahui");
+    const [careInstructions, setCareInstructions] = useState("Informasi cara merawat tidak tersedia.");
+    const [feedingInstructions, setFeedingInstructions] = useState("Informasi cara memberi makan tidak tersedia.");
+    const [groomingOptions, setGroomingOptions] = useState(["Model grooming tidak tersedia."]);
     const [isLoading, setIsLoading] = useState(false);
 
     const handleNext = () => setStep((prev) => prev + 1);
@@ -36,14 +39,37 @@ const AddPet = () => {
     };
 
     const parseBreedResponse = (response) => {
+        // Match patterns from responseText
         const hewanMatch = response.match(/Hewan:\s*(.+)/);
         const rasMatch = response.match(/Jenis ras:\s*(.+)/);
+        const caraMerawatMatch = response.match(/Cara merawatnya:\s*([\s\S]+?)\n\nCara memberi makan:/);
+        const caraMemberiMakanMatch = response.match(/Cara memberi makan:\s*([\s\S]+?)\n\nModel Grooming:/);
+        const jenisGroomingMatch = response.match(/Model Grooming:\s*([\s\S]*)/);
 
-        const jenisHewan = hewanMatch ? hewanMatch[1].trim() : null;
-        const jenisRas = rasMatch ? rasMatch[1].trim() : null;
+        // Function to clean and trim text
+        const cleanText = (text) => text.replace(/[\*\d\.]/g, "").trim();
 
-        return { jenisHewan, jenisRas };
+
+        // Parse and clean each section
+        const species = hewanMatch ? cleanText(hewanMatch[1]) : "Tidak diketahui";
+        const breed = rasMatch ? cleanText(rasMatch[1]) : "Tidak diketahui";
+        const careInstructions = caraMerawatMatch ? caraMerawatMatch[1] : "Informasi cara merawat tidak tersedia.";
+        const feedingInstructions = caraMemberiMakanMatch ? caraMemberiMakanMatch[1] : "Informasi cara memberi makan tidak tersedia.";
+        const groomingOptions = jenisGroomingMatch
+            ? jenisGroomingMatch[1]
+                .split("\n")
+                .map((item) => cleanText(item))
+                .filter(Boolean)
+            : ["Model grooming tidak tersedia."];
+        return {
+            species,
+            breed,
+            careInstructions,
+            feedingInstructions,
+            groomingOptions
+        };
     };
+
 
     const handleFileUpload = async () => {
         if (!selectedFile) {
@@ -68,20 +94,33 @@ const AddPet = () => {
                 body: formData,
             });
 
+
             if (!response.ok) {
                 throw new Error(`Gagal mendeteksi breed: ${response.statusText}`);
             }
 
             const data = await response.json();
+            console.log("Respons penuh:", data.response);
 
             if (!data || !data.response) {
                 throw new Error("Respons API tidak valid atau kosong.");
             }
 
-            const { jenisHewan, jenisRas } = parseBreedResponse(data.response);
+            const {
+                species,
+                breed,
+                careInstructions,
+                feedingInstructions,
+                groomingOptions
+            } = parseBreedResponse(data.response);
 
-            setSpecies(jenisHewan || "Unknown");
-            setBreed(jenisRas || "Unknown");
+            // Set nilai ke state atau variabel dengan fallback jika data tidak ditemukan
+            setSpecies(species || "Tidak diketahui");
+            setBreed(breed || "Tidak diketahui");
+            setCareInstructions(careInstructions || "Informasi cara merawat tidak tersedia.");
+            setFeedingInstructions(feedingInstructions || "Informasi cara memberi makan tidak tersedia.");
+            setGroomingOptions(groomingOptions.length > 0 ? groomingOptions : ["Model grooming tidak tersedia."]);
+
             handleNext(); // Lanjut ke langkah konfirmasi
         } catch (error) {
             console.error("Error detecting breed:", error);
@@ -98,21 +137,25 @@ const AddPet = () => {
             return;
         }
 
+        // Struktur data yang akan dikirim ke backend
         const petData = {
-            uid: user?.uid,
-            name,
-            species,
-            breed,
-            age: parseInt(age, 10),
+            uid: user?.uid, // User ID
+            name, // Nama hewan
+            species, // Jenis hewan
+            breed, // Ras hewan
+            age: parseInt(age, 10), // Umur hewan (dikonversi ke angka)
+            careInstructions, // Cara merawat
+            feedingInstructions, // Cara memberi makan
+            groomingOptions, // Opsi grooming
         };
 
         try {
             const response = await axios.post("http://localhost:5000/api/pets/add", petData);
 
             if (response.status === 201 || response.status === 200) {
-                console.log("Pet added successfully:", response.data);
+                console.log("Data hewan berhasil ditambahkan:", response.data);
 
-                fetchPets(user?.uid); // Fetch ulang data pets
+                fetchPets(user?.uid); // Fetch ulang data hewan
                 navigate("/petProfile"); // Arahkan ke halaman profil hewan
             } else {
                 throw new Error("Gagal menyimpan data hewan.");
@@ -122,6 +165,7 @@ const AddPet = () => {
             alert("Terjadi kesalahan saat menyimpan data hewan. Silakan coba lagi.");
         }
     };
+
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-100">
