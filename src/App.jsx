@@ -8,12 +8,11 @@ import PetProfile from "./pages/petProfile";
 import UserProfile from "./pages/userProfile";
 import DetailPetProfile from "./pages/detailPetprofile";
 import Subscribe from "./pages/subscribe";
-import AddPet from "./pages/addpet";
 import AddSchedule from "./pages/addschedule";
-import EditSchedule from "./pages/EditSchedule";
 import NavbarBottom from "./components/NavbarBottom"; // Import NavbarBottom
 import ResultPage from "./pages/resultPage";
 import Grooming from "./pages/grooming";
+import AddPet from "./pages/addPet";
 import React from "react";
 
 // Layout untuk halaman dengan NavbarBottom
@@ -43,7 +42,6 @@ function App() {
       <Route path="/addPet" element={<AuthLayout><AddPet /></AuthLayout>} />
       <Route path="/result" element={<AuthLayout><ResultPage /></AuthLayout>} />            
       <Route path="/addSchedule" element={<AuthLayout><AddSchedule /></AuthLayout>} />
-      <Route path="/editschedule/:scheduleId" element={<AuthLayout><EditSchedule /></AuthLayout>} />
       <Route path="/subscribe" element={<AuthLayout><Subscribe /></AuthLayout>} />
      
       

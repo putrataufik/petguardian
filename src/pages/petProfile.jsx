@@ -4,11 +4,13 @@ import { useNavigate } from "react-router-dom";
 import fotokucing from "../assets/kucing.png";
 import usePetStore from "../hooks/petStore"; // Import store Zustand
 import { FaRegTrashAlt } from "react-icons/fa";
-
+import { DialogDefault } from "../components/modal";
 const PetProfile = () => {
   const user = useAuthUser();
   const navigate = useNavigate();
   const { pets, loading, error, fetchPets } = usePetStore(); // Ambil data pets dari store Zustand
+  const [modalOpen, setModalOpen] = React.useState(false);
+  const [petToDelete, setPetToDelete] = React.useState(null);
   // Fetch pets saat komponen dimuat
   useEffect(() => {
     if (user?.uid && pets.length === 0) {
@@ -16,10 +18,16 @@ const PetProfile = () => {
     }
   }, [user?.uid, pets.length, fetchPets]);
 
+  const handleDeletePet = (petId) => {
+    setPetToDelete(petId);
+    setModalOpen(true);
+  }
   // Fungsi untuk menghapus pet
-  const handleDeletePet = async (petId) => {
+  const confirmDeletePet = async (petId) => {
+    if(!petToDelete) return;
+
     try {
-      const response = await fetch(`http://localhost:5000/api/pets/deletePet/${petId}`, {
+      const response = await fetch(`http://localhost:5000/api/pets/deletePet/${petToDelete}`, {
         method: "DELETE",
       });
 
@@ -66,9 +74,9 @@ const PetProfile = () => {
                 e.stopPropagation(); // Prevent triggering the onClick event for navigation
                 handleDeletePet(pet.petId);
               }}
-              className="bg-red-500 text-white px-4 py-2 rounded ml-2 hover:bg-red-600"
+              className="bg-red-500 text-white px-4 py-2 rounded mr-2 hover:bg-red-600"
             >
-               <FaRegTrashAlt />
+              <FaRegTrashAlt />
             </button>
           </div>
         ))
@@ -82,6 +90,11 @@ const PetProfile = () => {
       >
         Add +
       </button>
+      <DialogDefault
+        modalOpen={modalOpen}
+        setModalOpen={setModalOpen}
+        onConfirm={confirmDeletePet}
+      />
     </div>
   );
 };
