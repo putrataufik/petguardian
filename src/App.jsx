@@ -4,10 +4,11 @@ import SignUp from "./pages/signUp";
 import AiDetection from "./pages/aiDetection";
 import Schedule from "./pages/schedule";
 import DetailSchedule from "./pages/detailSchedule";
-import PetProfile from "./pages/petProfile";
+import PetProfile from "./pages/listPet";
 import UserProfile from "./pages/userProfile";
 import DetailPetProfile from "./pages/detailPetprofile";
 import Subscribe from "./pages/subscribe";
+import AddPet from "./pages/addPet";
 import AddSchedule from "./pages/addschedule";
 import NavbarBottom from "./components/NavbarBottom"; // Import NavbarBottom
 import ResultPage from "./pages/resultPage";
