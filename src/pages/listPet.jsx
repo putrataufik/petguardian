@@ -49,10 +49,12 @@ const PetProfile = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 p-6 pb-24 flex flex-col items-center relative">
-      <div className="flex justify-center items-center mt-6 w-full">
-        <h1 className="text-2xl font-bold">Your Pets</h1>
-      </div>
+    <div className="min-h-screen bg-gray-100 p-6 flex flex-col items-center pb-36">
+      
+      <h1 className="text-2xl font-bold text-center mt-6">
+        Your Pets
+      </h1>
+     
 
       {loading && pets.length === 0 ? (
         <p className="mt-6 text-gray-500">Loading pets...</p>
@@ -62,12 +64,12 @@ const PetProfile = () => {
         pets.map((pet) => (
           <div
             key={pet.petId}
-            className="mt-6 w-full max-w-md flex items-center bg-[#1D1D1D] rounded-r-lg overflow-hidden cursor-pointer"
+            className="mt-6 w-full max-w-md flex items-center bg-[#eeeeee] shadow-lg rounded-lg overflow-hidden cursor-pointer"
             onClick={() => handlePetClick(pet.petId)} // Add click event to navigate to pet detail
           >
-            <img src={fotokucing} alt="Pet" className="w-1/3 object-cover" />
-            <div className="p-4 flex-grow text-white">
-              <h2 className="text-lg font-bold text-white">{pet.name || "Unnamed Pet"}</h2>
+            <img src={fotokucing} alt="Pet" className="w-1/3 object-cover rounded-lg" />
+            <div className="p-4 flex-grow text-black">
+              <h2 className="text-lg font-bold text-black">{pet.name || "Unnamed Pet"}</h2>
             </div>
             <button
               onClick={(e) => {
@@ -86,9 +88,9 @@ const PetProfile = () => {
 
       <button
         onClick={() => navigate("/addPet")}
-        className="fixed bottom-20 right-4 bg-pink-500 text-white font-semibold py-3 px-4 rounded-full shadow-md hover:bg-pink-600 hover:shadow-lg transition duration-300"
+        className="fixed bottom-20 right-6 w-14 h-14 bg-pink-500 rounded-full text-white text-2xl shadow-lg"
       >
-        Add +
+        +
       </button>
       <DialogDefault
         modalOpen={modalOpen}

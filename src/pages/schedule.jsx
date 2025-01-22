@@ -128,14 +128,15 @@ const Schedule = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 p-6 pb-24 flex flex-col items-center">
+    <div className="min-h-screen bg-gray-100 p-6 flex flex-col items-center mb-4">
       {/* Header */}
-      <div className="w-full flex justify-center items-center mb-6 ">
-        <h1 className="text-xl font-bold text-gray-800">Your Pet Schedule</h1>
-      </div>
+      <h1 className="text-2xl font-bold text-center my-6">
+        Your Schedule
+      </h1>
+      
 
       {/* Card full */}
-      <div className="w-full max-w-md space-y-6">
+      <div className="w-full max-w-md space-y-6 pb-36">
         {filteredSchedules && filteredSchedules.length > 0 ? (
           filteredSchedules.map((schedule, index) => (
             <div
@@ -184,19 +185,19 @@ const Schedule = () => {
               </div>
 
               {/* Isi Content */}
-              <div className="flex p-4 bg-gray-100 rounded-lg shadow-md w-72 justify-between items-center">
+              <div className="flex p-4 bg-[#eeeeee] rounded-lg shadow-md w-72 justify-between items-center">
                 <div
                   className="flex flex-col gap-2"
                   onClick={() => handleDetailSchedule(schedule.scheduleID)}
                 >
-                  <h2 className="text-lg font-semibold text-gray-800">
+                  <h2 className="text-lg font-semibold text-black">
                     {schedule.event}
                   </h2>
-                  <div className="flex items-center text-gray-600 text-sm mt-2">
+                  <div className="flex items-center text-black text-sm mt-2">
                     <img src={locationIcon} alt="" className="w-5 h-5 mr-2" />
                     {schedule.location}
                   </div>
-                  <div className="flex items-center text-gray-600 text-sm mt-2">
+                  <div className="flex items-center text-black text-sm mt-2">
                     <img
                       src={scheduleIcon}
                       alt="Schedule Icon"

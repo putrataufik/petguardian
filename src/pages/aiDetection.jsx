@@ -95,7 +95,7 @@ const AiDetection = () => {
             default:
               diseaseInfo = "Penyakit kulit tidak terdeteksi atau tidak dikenal.";
           }
-        }else{
+        } else {
           alert("Hewan tidak Diketahui Silahkan Unggah Gambar Peliharaan anda yang lain");
         }
 
@@ -150,7 +150,7 @@ const AiDetection = () => {
   return (
     <div className="min-h-screen bg-gray-100 p-6 flex flex-col items-center mb-4">
       <h1 className="text-2xl font-bold text-center mt-6">
-        Get to know your pet with <span className="text-pink-500">Petguard</span>
+        Detect Your Pet Skin Disease
       </h1>
       {!previewImage && (
         <FileUpload onFileChange={setSelectedFile} onPreviewChange={setPreviewImage} />
@@ -167,9 +167,10 @@ const AiDetection = () => {
       {/* Select options untuk memilih jenis hewan */}
       <div className="my-4">
         <Select
-          label="Pilih Jenis Hewan"
+          label="select animal"
           value={selectedAnimal}
           onChange={(value) => setSelectedAnimal(value)}
+          color="pink"
         >
           <Option value="Anjing">Anjing</Option>
           <Option value="Kucing">Kucing</Option>
@@ -178,7 +179,9 @@ const AiDetection = () => {
       <div className="mt-40">
         <LoaderButton loading={loading} onClick={handleIdentifyBreed} label="Identify Your Pet" />
       </div>
-      <RemainingTokens usageToken={usageToken} />
+      <div className="mt-4">
+        <RemainingTokens usageToken={usageToken} />
+      </div>
     </div>
   );
 };

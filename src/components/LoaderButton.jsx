@@ -7,6 +7,7 @@ const LoaderButton = ({ loading, onClick, label }) => (
     onClick={onClick}
     loading={loading}
     loadingText="Processing..."
+    color="pink"
   >
     {loading ? "Processing..." : label}
   </Button>
