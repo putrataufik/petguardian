@@ -138,7 +138,7 @@ const DetailSchedule = () => {
             <div className="flex justify-center mt-6">
               <button
                 onClick={() => navigate("/schedule")}
-                className="bg-black text-pink-500 py-2 px-6 rounded-lg shadow-md"
+                className="bg-black text-white py-2 px-6 mt-20 rounded-lg shadow-md w-40"
               >
                 Back
               </button>

@@ -1,71 +1,157 @@
-import React, { useState, useEffect } from 'react';
-
-function Countdown() {
-  const releaseDate = new Date('2026-02-20T00:00:00'); // Tanggal rilis
-  const [timeLeft, setTimeLeft] = useState({});
-
-  const calculateTimeLeft = () => {
-    const now = new Date();
-    const difference = releaseDate - now;
-
-    if (difference <= 0) {
-      setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
-      return;
-    }
-
-    const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((difference % (1000 * 60)) / 1000);
-
-    setTimeLeft({ days, hours, minutes, seconds });
-  };
+import React, { useState, useEffect } from "react";
+import usePetStore from "../hooks/petStore";
+import { useAuthUser } from "../hooks/authHooks";
+import { Select, Option } from "@material-tailwind/react";
+const Grooming = () => {
+  const user = useAuthUser();
+  const { pets, loading, error, fetchPets } = usePetStore();
+  const [selectedPetId, setSelectedPetId] = useState("");
+  const [groomingOptions, setGroomingOptions] = useState([]);
+  const [selectedGrooming, setSelectedGrooming] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [generatedText, setGeneratedText] = useState(""); // Menyimpan hasil dari AI
+  const [selectedSpecies, setSelectedSpecies] = useState("");
+  const [selectedBreed, setSelectedBreed] = useState("");
 
   useEffect(() => {
-    const timer = setInterval(() => calculateTimeLeft(), 1000);
+    if (user?.uid && pets.length === 0) {
+      fetchPets(user.uid);
+    }
+  }, [user?.uid, pets.length, fetchPets]);
 
-    return () => clearInterval(timer);
-  }, []);
+  useEffect(() => {
+    const selectedPet = pets.find((pet) => pet.petId === selectedPetId);
+    if (selectedPet) {
+      setSelectedSpecies(selectedPet.species);
+      setSelectedBreed(selectedPet.breed);
+      setGroomingOptions(selectedPet.groomingOptions || []);
+      setSelectedGrooming(""); // Reset opsi grooming jika hewan baru dipilih
+    }
+  }, [selectedPetId, pets]);
+
+  const handleSubmit = async () => {
+    if (!selectedPetId || !selectedGrooming) return;
+
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch("http://localhost:5000/api/generative/grooming", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          species: selectedSpecies,
+          breed: selectedBreed,
+          grooming: selectedGrooming,
+        }),
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        setGeneratedText(result.generatedText); // Simpan hasil dari AI
+      } else {
+        const error = await response.text();
+        alert(`Error: ${error}`);
+      }
+    } catch (error) {
+      alert(`Error saat mengirim data: ${error.message}`);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  if (loading)
+    return (
+      <div className="text-center py-4">
+        <p className="text-gray-600">Loading...</p>
+      </div>
+    );
+
+  if (error)
+    return (
+      <div className="text-center py-4">
+        <p className="text-red-500">Error: {error.message}</p>
+      </div>
+    );
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-pink-100">
-      <div className="text-center text-black">
-        <h1 className="text-6xl font-bold text-pink-600 mb-6 animate__animated animate__fadeIn">
-          Coming Soon! <br />
-          Rilis pada 20 Februari 2026
-        </h1>
+    <div className="min-h-screen bg-gray-100 p-6 flex flex-col items-center mb-4">
 
-        {/* Countdown */}
-        <div className="text-2xl font-semibold text-gray-800">
-          <div className="flex justify-center gap-8 mb-4">
-            <div className="bg-white rounded-lg p-4 shadow-lg">
-              <div className="text-xl text-pink-600">Hari</div>
-              <div className="text-2xl font-bold">{timeLeft.days}</div>
-            </div>
-            <div className="bg-white rounded-lg p-4 shadow-lg">
-              <div className="text-xl text-pink-600">Jam</div>
-              <div className="text-2xl font-bold">{timeLeft.hours}</div>
-            </div>
-            <div className="bg-white rounded-lg p-4 shadow-lg">
-              <div className="text-xl text-pink-600">Menit</div>
-              <div className="text-2xl font-bold">{timeLeft.minutes}</div>
-            </div>
-            <div className="bg-white rounded-lg p-4 shadow-lg">
-              <div className="text-xl text-pink-600">Detik</div>
-              <div className="text-2xl font-bold">{timeLeft.seconds}</div>
-            </div>
-          </div>
-        </div>
+      <h1 className="text-2xl font-bold text-center my-6">
+        Model Grooming Generator
+      </h1>
 
-        {/* Tombol Stay Tuned */}
-        <div className="mt-6">
-          <button className="bg-pink-500 text-white px-8 py-3 rounded-full text-lg font-semibold hover:bg-pink-600 transition duration-300">
-            Stay Tuned
-          </button>
-        </div>
+      <div className="mb-6">
+        <label
+          htmlFor="petSelect"
+          className="block text-sm font-medium text-black mb-2"
+        >
+          Pet Name
+        </label>
+        <Select
+          id="petSelect"
+          color="pink"
+          value={selectedPetId || ""}
+          onChange={(value) => setSelectedPetId(value)}
+          label="select animal"
+        >
+          {pets.map((pet) => (
+            <Option key={pet.petId || ""} value={pet.petId || ""}>
+              {pet.name} ({pet.species})
+            </Option>
+          ))}
+        </Select>
       </div>
+
+      <div className="mb-6">
+        <label
+          htmlFor="groomingSelect"
+          className="block text-sm font-medium text-black mb-2"
+        >
+          Grooming Models
+        </label>
+        <Select
+          id="groomingSelect"
+          color="pink"
+          disabled={groomingOptions.length === 0}
+          value={selectedGrooming}
+          onChange={(value) => setSelectedGrooming(value)}
+          label={
+            groomingOptions.length === 0
+              ? "select animal first"
+              : "Select Grooming Model"
+          }
+        >
+          {groomingOptions.map((option, index) => (
+            <Option key={index} value={option}>
+              {option}
+            </Option>
+          ))}
+        </Select>
+      </div>
+
+      <div className="text-center mt-6">
+        <button
+          onClick={handleSubmit}
+          disabled={!selectedPetId || !selectedGrooming || isSubmitting}
+          className={`px-6 py-2 text-white font-bold rounded-md shadow-md ${!selectedPetId || !selectedGrooming || isSubmitting
+            ? "bg-[#fb98ad] cursor-not-allowed"
+            : "bg-pink-500 hover:bg-[#d94768] focus:ring-2 focus:ring-[#F8567B]"
+            }`}
+        >
+          {isSubmitting ? "Mengirim..." : "Kirim Data"}
+        </button>
+      </div>
+
+      {generatedText && (
+        <div className="mt-6 p-4 bg-gray-50 border border-gray-200 rounded-md">
+          <h2 className="text-lg font-semibold text-[#F8567B]">Hasil Grooming:</h2>
+          <p className="text-black mt-2">{generatedText}</p>
+        </div>
+      )}
     </div>
   );
-}
+};
 
-export default Countdown;
+export default Grooming;
