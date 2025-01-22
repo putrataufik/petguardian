@@ -21,6 +21,7 @@ const UserProfile = () => {
     const fetchUserData = async () => {
       try {
         const data = await getUserByUID(user.uid);
+        console.log("User Data:", data);
         setUserData(data);
         setFormData({ name: data.name });
       } catch (err) {

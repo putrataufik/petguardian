@@ -24,7 +24,7 @@ const PetProfile = () => {
   }
   // Fungsi untuk menghapus pet
   const confirmDeletePet = async (petId) => {
-    if(!petToDelete) return;
+    if (!petToDelete) return;
 
     try {
       const response = await fetch(`http://localhost:5000/api/pets/deletePet/${petToDelete}`, {
@@ -62,10 +62,12 @@ const PetProfile = () => {
         pets.map((pet) => (
           <div
             key={pet.petId}
-            className="mt-6 w-full max-w-md flex items-center bg-[#1D1D1D] rounded-r-lg overflow-hidden cursor-pointer"
+            className="mt-6 w-full max-w-md flex items-center bg-[#1D1D1D] rounded-r-lg overflow-hidden cursor-pointer h-28" // Tambahkan class h-40 untuk height
             onClick={() => handlePetClick(pet.petId)} // Add click event to navigate to pet detail
           >
-            <img src={fotokucing} alt="Pet" className="w-1/3 object-cover" />
+            <div className="w-1/3 h-full">
+              <img src={pet.imageUrl} alt="Pet" className="object-cover w-full h-full" />
+            </div>
             <div className="p-4 flex-grow text-white">
               <h2 className="text-lg font-bold text-white">{pet.name || "Unnamed Pet"}</h2>
             </div>
@@ -79,6 +81,8 @@ const PetProfile = () => {
               <FaRegTrashAlt />
             </button>
           </div>
+
+
         ))
       ) : (
         <p className="mt-6 text-gray-500">No pets found. Add a new pet!</p>
