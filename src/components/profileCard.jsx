@@ -16,8 +16,8 @@ const ProfileCard = ({
   // Buat URL gambar hanya jika userData.picture tersedia
   const imageUrl = userData.picture
     ? `http://localhost:5000/api/images/cache?url=${encodeURIComponent(userData.picture)}`
-    : null;
-
+    : userData.photoURL;
+    
   return (
     <div className="flex flex-col bg-[#1D1D1D] rounded-b-3xl w-full p-6 shadow-lg relative">
       {/* Header container */}

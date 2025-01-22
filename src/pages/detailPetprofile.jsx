@@ -111,7 +111,7 @@ const DetailPetProfile = () => {
 
         <div className="w-full h-[300px] sm:h-[400px] lg:h-[500px] relative">
           <img
-            src={fotokucing}
+            src={pet.imageUrl}
             alt="Pet"
             className="w-full h-full object-cover rounded-b-2xl shadow-md"
           />

@@ -62,7 +62,7 @@ function SignUp() {
         console.log(loginData);
 
         if (loginResponse.ok) {
-          navigate("/");
+          navigate("/aidetection");
         } else {
           setError(loginData.error);
         }

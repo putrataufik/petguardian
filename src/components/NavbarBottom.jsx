@@ -5,16 +5,21 @@ import { MdPets } from "react-icons/md";
 import { FaScissors } from "react-icons/fa6";
 import { BsStars } from "react-icons/bs";
 import { useAuthUser } from "../hooks/authHooks"; // Mengimpor hook untuk autentikasi
-
+import iconProfile from "../assets/iconProfile.png"; // Mengimpor gambar profil
 const NavbarBottom = () => {
   const user = useAuthUser(); // Ambil data pengguna
   const [imageUrl, setImageUrl] = useState(""); // State untuk menyimpan URL gambar user
+  console.log("User:", user);
 
   // Menetapkan URL gambar profil jika user.photoURL ada
   useEffect(() => {
     if (user && user.photoURL) {
-      const url = `http://localhost:5000/api/images/cache?url=${encodeURIComponent(user.photoURL)}`;
+      
+      const url = user.photoURL
+    ? `http://localhost:5000/api/images/cache?url=${encodeURIComponent(user.photoURL)}`
+    : user.photoURL;
       setImageUrl(url);
+      console.log("URL: ", url);
     } else {
       setImageUrl(""); // Reset jika user atau photoURL tidak ada
     }
@@ -60,7 +65,7 @@ const NavbarBottom = () => {
             className="w-8 h-8 rounded-full"
           />
         ) : (
-          <FaScissors size={32} /> // Icon fallback jika gambar tidak ada
+          <img src={iconProfile} alt="" className="w-8 h-8"/> // Icon fallback jika gambar tidak ada
         )}
       </Link>
     </div>
