@@ -133,38 +133,45 @@ const AddPet = () => {
 
     const handleSave = async () => {
         if (!name || !species || !breed || !age) {
-            alert("Harap lengkapi semua data sebelum menyimpan!");
-            return;
+          alert("Harap lengkapi semua data sebelum menyimpan!");
+          return;
         }
-
-        // Struktur data yang akan dikirim ke backend
-        const petData = {
-            uid: user?.uid, // User ID
-            name, // Nama hewan
-            species, // Jenis hewan
-            breed, // Ras hewan
-            age: parseInt(age, 10), // Umur hewan (dikonversi ke angka)
-            careInstructions, // Cara merawat
-            feedingInstructions, // Cara memberi makan
-            groomingOptions, // Opsi grooming
-        };
-
+      
+        if (!selectedFile) {
+          alert("Harap unggah gambar sebelum menyimpan!");
+          return;
+        }
+      
+        const petData = new FormData();
+        petData.append("uid", user?.uid);
+        petData.append("name", name);
+        petData.append("species", species);
+        petData.append("breed", breed);
+        petData.append("age", parseInt(age, 10));
+        petData.append("careInstructions", careInstructions);
+        petData.append("feedingInstructions", feedingInstructions);
+        petData.append("groomingOptions", groomingOptions);
+        petData.append("image", selectedFile);
+      
         try {
-            const response = await axios.post("http://localhost:5000/api/pets/add", petData);
-
-            if (response.status === 201 || response.status === 200) {
-                console.log("Data hewan berhasil ditambahkan:", response.data);
-
-                fetchPets(user?.uid); // Fetch ulang data hewan
-                navigate("/petProfile"); // Arahkan ke halaman profil hewan
-            } else {
-                throw new Error("Gagal menyimpan data hewan.");
-            }
+          const response = await axios.post("http://localhost:5000/api/pets/add", petData, {
+            headers: { "Content-Type": "multipart/form-data" },
+          });
+      
+          if (response.status === 201 || response.status === 200) {
+            console.log("Data hewan berhasil ditambahkan:", response.data);
+      
+            fetchPets(user?.uid); // Fetch ulang data hewan
+            navigate("/petProfile"); // Arahkan ke halaman profil hewan
+          } else {
+            throw new Error("Gagal menyimpan data hewan.");
+          }
         } catch (error) {
-            console.error("Error saving pet:", error);
-            alert("Terjadi kesalahan saat menyimpan data hewan. Silakan coba lagi.");
+          console.error("Error saving pet:", error);
+          alert("Terjadi kesalahan saat menyimpan data hewan. Silakan coba lagi.");
         }
-    };
+      };
+      
 
 
     return (
