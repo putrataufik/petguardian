@@ -1,12 +1,12 @@
 export const getUsageToken = async (userId) => {
-    const response = await fetch(`http://localhost:5000/api/users/getusagetoken/${userId}`);
+    const response = await fetch(`${API_BASE_URL}/users/getusagetoken/${userId}`);
     const data = await response.json();
     if (!response.ok) throw new Error(data.message || "Failed to fetch token");
     return data.usageToken;
   };
   
   export const updateUsageToken = async (userId, newTokenValue) => {
-    const response = await fetch(`http://localhost:5000/api/users/updatedatatoken/${userId}`, {
+    const response = await fetch(`${API_BASE_URL}/users/updatedatatoken/${userId}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ usageToken: newTokenValue }),
@@ -19,7 +19,7 @@ export const getUsageToken = async (userId) => {
     const formData = new FormData();
     formData.append("image", selectedFile);
   
-    const response = await fetch("http://localhost:5000/api/gemini/detect-animal-breed", {
+    const response = await fetch(`${API_BASE_URL}/gemini/detect-animal-breed`, {
       method: "POST",
       body: formData,
     });

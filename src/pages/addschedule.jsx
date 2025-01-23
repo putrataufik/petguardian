@@ -4,6 +4,7 @@ import axios from "axios"; // Pastikan axios sudah terinstal
 import { useAuthUser } from "../hooks/authHooks"; // Pastikan hook ini mengembalikan user yang sudah terautentikasi
 import arrowLeft from "../assets/arrowLeft.png";
 const AddSchedule = () => {
+  const API_BASE_URL = import.meta.env.VITE_BACKEND_URL;
   const user = useAuthUser(); // Mendapatkan data pengguna yang terautentikasi
   const navigate = useNavigate();
   const [formData, setFormData] = useState({

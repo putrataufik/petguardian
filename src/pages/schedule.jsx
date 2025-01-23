@@ -8,6 +8,7 @@ import locationIcon from "../assets/locationMark.png";
 import { DialogDefault } from "../components/modal";
 
 const Schedule = () => {
+  const API_BASE_URL = import.meta.env.VITE_BACKEND_URL;
   const user = useAuthUser(); // Mendapatkan data pengguna yang terautentikasi
   const navigate = useNavigate();
   const [schedules, setSchedules] = useState([]); // Menyimpan data jadwal
@@ -31,7 +32,12 @@ const Schedule = () => {
 
     try {
       const response = await axios.get(
-        `http://localhost:5000/api/schedules/getschedule/${user.uid}`
+        `${API_BASE_URL}/schedules/getschedule/${user.uid}`,
+        {
+          headers: {
+            "ngrok-skip-browser-warning": "69420"
+          }
+        }
       );
       console.log("Fetched schedules:", response.data);
       const schedules = response.data.schedule;
@@ -75,9 +81,14 @@ const Schedule = () => {
 
     try {
       await axios.post(
-        `http://localhost:5000/api/schedules/updateschedule/${scheduleID}`,
+        `${API_BASE_URL}/schedules/updateschedule/${scheduleID}`,
         {
           checked: newCheckedState,
+        },
+        {
+          headers: {
+            "ngrok-skip-browser-warning": "69420",
+          },
         }
       );
       console.log(`Schedule ${scheduleID} updated successfully!`);
@@ -109,7 +120,7 @@ const Schedule = () => {
 
     try {
       const response = await axios.delete(
-        `http://localhost:5000/api/schedules/deleteschedule/${scheduleToDelete}`
+        `${API_BASE_URL}/schedules/deleteschedule/${scheduleToDelete}`
       );
       console.log("Schedule deleted:", response.data);
       fetchSchedules(); // Refresh the schedule list after deletion

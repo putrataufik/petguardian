@@ -6,18 +6,21 @@ import usePetStore from "../hooks/petStore"; // Import store Zustand
 import { FaRegTrashAlt } from "react-icons/fa";
 import { DialogDefault } from "../components/modal";
 const PetProfile = () => {
+  const API_BASE_URL = import.meta.env.VITE_BACKEND_URL;
   const user = useAuthUser();
   const navigate = useNavigate();
-  const { pets, loading, error, fetchPets } = usePetStore(); // Ambil data pets dari store Zustand
+  const {pets, loading, error, fetchPets } = usePetStore(); // Ambil data pets dari store Zustand
   const [modalOpen, setModalOpen] = React.useState(false);
   const [petToDelete, setPetToDelete] = React.useState(null);
+  
   // Fetch pets saat komponen dimuat
   useEffect(() => {
-    if (user?.uid && pets.length === 0) {
+    if (user?.uid && pets?.length === 0) {
       fetchPets(user.uid); // Fetch pets hanya jika belum ada data
     }
-  }, [user?.uid, pets.length, fetchPets]);
-
+  }, [user?.uid, pets, fetchPets]);
+  
+  console.log("Petsss:", pets);
   const handleDeletePet = (petId) => {
     setPetToDelete(petId);
     setModalOpen(true);
@@ -27,7 +30,7 @@ const PetProfile = () => {
     if (!petToDelete) return;
 
     try {
-      const response = await fetch(`http://localhost:5000/api/pets/deletePet/${petToDelete}`, {
+      const response = await fetch(`${API_BASE_URL}/pets/deletePet/${petToDelete}`, {
         method: "DELETE",
       });
 

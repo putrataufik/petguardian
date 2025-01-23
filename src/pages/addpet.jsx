@@ -6,8 +6,8 @@ import axios from "axios";
 import { Input, Button } from "@material-tailwind/react";
 import uploadImage from "../assets/uploadImagge.png";
 import arrowLeft from "../assets/arrowLeft.png";
-
 const AddPet = () => {
+    const API_BASE_URL = import.meta.env.VITE_BACKEND_URL;
     const user = useAuthUser();
     const { fetchPets } = usePetStore(); // Ambil fungsi fetch pets
     const navigate = useNavigate();
@@ -89,10 +89,14 @@ const AddPet = () => {
 
         try {
             setIsLoading(true); // Set tombol dalam mode loading
-            const response = await fetch("http://localhost:5000/api/gemini/detect-animal-breed", {
+            const response = await fetch(`${API_BASE_URL}/gemini/detect-animal-breed`, {
                 method: "POST",
+                headers: {
+                  "ngrok-skip-browser-warning": "69420",
+                },
                 body: formData,
-            });
+              });
+              
 
 
             if (!response.ok) {
@@ -154,8 +158,10 @@ const AddPet = () => {
         petData.append("image", selectedFile);
       
         try {
-          const response = await axios.post("http://localhost:5000/api/pets/add", petData, {
-            headers: { "Content-Type": "multipart/form-data" },
+          const response = await axios.post(`${API_BASE_URL}/pets/add`, petData, {
+            headers: { "Content-Type": "multipart/form-data",
+                "ngrok-skip-browser-warning": "69420",
+             },
           });
       
           if (response.status === 201 || response.status === 200) {

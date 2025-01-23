@@ -7,6 +7,7 @@ import { BsStars } from "react-icons/bs";
 import { useAuthUser } from "../hooks/authHooks"; // Mengimpor hook untuk autentikasi
 import iconProfile from "../assets/iconProfile.png"; // Mengimpor gambar profil
 const NavbarBottom = () => {
+  const API_BASE_URL = import.meta.env.VITE_BACKEND_URL;
   const user = useAuthUser(); // Ambil data pengguna
   const [imageUrl, setImageUrl] = useState(""); // State untuk menyimpan URL gambar user
   console.log("User:", user);
@@ -16,7 +17,7 @@ const NavbarBottom = () => {
     if (user && user.photoURL) {
       
       const url = user.photoURL
-    ? `http://localhost:5000/api/images/cache?url=${encodeURIComponent(user.photoURL)}`
+    ? `${API_BASE_URL}/images/cache?url=${encodeURIComponent(user.photoURL)}`
     : user.photoURL;
       setImageUrl(url);
       console.log("URL: ", url);

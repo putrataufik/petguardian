@@ -12,9 +12,9 @@ import {
   Textarea
 } from "@material-tailwind/react";
 import { PencilIcon } from "@heroicons/react/24/outline";
-import fotokucing from "../assets/kucing.png";
 import arrowLeft from "../assets/arrowLeft.png";
 const DetailPetProfile = () => {
+  const API_BASE_URL = import.meta.env.VITE_BACKEND_URL;
   const user = useAuthUser(); 
   const { petId } = useParams(); 
   const [pet, setPet] = useState(null);
@@ -34,7 +34,12 @@ const DetailPetProfile = () => {
         console.log(user.uid);
         console.log(petId);
         const response = await axios.get(
-          `http://localhost:5000/api/pets/owner/${user.uid}`
+          `${API_BASE_URL}/pets/owner/${user.uid}`,
+          {
+            headers: {
+              "ngrok-skip-browser-warning": "69420",
+            },
+          }
         );
         const foundPet = response.data.pets.find((p) => p.petId === petId);
         if (foundPet) {
@@ -62,8 +67,13 @@ const DetailPetProfile = () => {
    const handleSave = async () => {
     try {
       const response = await axios.post(
-        `http://localhost:5000/api/pets/updatePet/${petId}`,
-        formData
+        `${API_BASE_URL}/pets/updatePet/${petId}`,
+        formData,
+        {
+          headers: {
+            "ngrok-skip-browser-warning": "69420",
+          },
+        }
       );
       console.log("Pet updated:", response.data);
       setPet((prev) => ({ ...prev, ...formData }));

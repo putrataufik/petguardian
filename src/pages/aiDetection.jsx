@@ -13,6 +13,7 @@ import {
 } from "../assets/answerDisease";
 
 const AiDetection = () => {
+  const API_BASE_URL = import.meta.env.VITE_BACKEND_URL;
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewImage, setPreviewImage] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -41,8 +42,8 @@ const AiDetection = () => {
   const handleDetectDisease = async (jenisHewan) => {
     const endpoint =
       jenisHewan === "Anjing"
-        ? "http://localhost:5000/api/dogskindisease/detectdog"
-        : "http://localhost:5000/api/catskindisease/detectcat";
+        ? `${API_BASE_URL}/dogskindisease/detectdog`
+        : `${API_BASE_URL}/catskindisease/detectcat`;
 
     try {
       const formData = new FormData();
@@ -50,9 +51,12 @@ const AiDetection = () => {
 
       const response = await fetch(endpoint, {
         method: "POST",
+        headers: {
+          "ngrok-skip-browser-warning": "69420",
+        },
         body: formData,
       });
-
+      
       const data = await response.json();
       if (response.ok) {
         console.log("Deteksi penyakit berhasil:", data);

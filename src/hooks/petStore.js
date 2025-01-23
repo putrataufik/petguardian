@@ -1,6 +1,5 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import axios from "axios";
 
 const usePetStore = create(
   persist(
@@ -9,28 +8,42 @@ const usePetStore = create(
       loading: false,
       error: null,
 
+      // Fetch pets for a specific user
       fetchPets: async (uid) => {
+        const API_BASE_URL = import.meta.env.VITE_BACKEND_URL;
+        console.log("Fetching pets for UID:", uid);
         set({ loading: true, error: null });
+
         try {
-          const response = await axios.get(
-            `http://localhost:5000/api/pets/owner/${uid}`
-          );
-          set({ pets: response.data.pets, loading: false });
+          const response = await fetch(`${API_BASE_URL}/pets/owner/${uid}`, {
+            headers: new Headers({
+              "ngrok-skip-browser-warning": "69420", // Remove if unnecessary
+            }),
+          }).then((res) => res.json());
+
+          if (response && Array.isArray(response.pets)) {
+            console.log("Fetched pets:", response.pets);
+            set({ pets: response.pets, loading: false });
+          } else {
+            throw new Error("Invalid API response format");
+          }
         } catch (error) {
           console.error("Error fetching pets:", error);
-          set({ error: "Failed to fetch pets.", loading: false, });
+          set({ error: `Failed to fetch pets: ${error.message}`, loading: false });
         }
       },
-      
+
+      // Add a new pet to the list
       addPet: (newPet) =>
         set((state) => ({
-          pets: [...state.pets, newPet], // Tambahkan pet baru ke array pets
+          pets: [...state.pets, newPet],
         })),
 
-      clearPets: () => set({ pets: [], error: null, loading: false }), // Fungsi untuk menghapus data pets
+      // Clear all pets from the state
+      clearPets: () => set({ pets: [], error: null, loading: false }),
     }),
     {
-      name: "pet-storage", // Key untuk localStorage
+      name: "pet-storage", // Key for localStorage
     }
   )
 );

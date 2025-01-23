@@ -3,6 +3,7 @@ import usePetStore from "../hooks/petStore";
 import { useAuthUser } from "../hooks/authHooks";
 import { Select, Option } from "@material-tailwind/react";
 const Grooming = () => {
+  const API_BASE_URL = import.meta.env.VITE_BACKEND_URL;
   const user = useAuthUser();
   const { pets, loading, error, fetchPets } = usePetStore();
   const [selectedPetId, setSelectedPetId] = useState("");

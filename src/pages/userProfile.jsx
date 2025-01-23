@@ -4,13 +4,12 @@ import { getUserByUID, updateUserByUID, getSubscriptionStatusByUID } from "../ap
 import ProfileCard from "../components/profileCard";
 import EditProfileForm from "../components/editProfileForm";
 import { Button, Card, Typography } from "@material-tailwind/react";
-import { useNavigate } from "react-router-dom";
 import crownIcon from "../assets/king.png";
 import axios from "axios";
 
 const UserProfile = () => {
+  const API_BASE_URL = import.meta.env.VITE_BACKEND_URL;
   const user = useAuthUser();
-  const navigate = useNavigate();
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -89,14 +88,20 @@ const UserProfile = () => {
     console.log("email " + user.email);
     try {
       const response = await axios.post(
-        `http://localhost:5000/api/subscriptions/create`,
+        `${API_BASE_URL}/subscriptions/create`,
         {
           first_name: user.displayName,
           email: user.email,
           user_id: user.uid,
+        },
+        {
+          headers: {
+            "ngrok-skip-browser-warning": "69420",
+          },
         }
       );
       const { token } = response.data;
+      
       console.log("Token:", token);
 
       // Redirect ke Midtrans Snap

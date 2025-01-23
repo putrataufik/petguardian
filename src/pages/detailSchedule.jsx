@@ -16,6 +16,7 @@ import calendarIcon from "../assets/calendar.png";
 import clockIcon from "../assets/clock.png";
 
 const DetailSchedule = () => {
+  const API_BASE_URL = import.meta.env.VITE_BACKEND_URL;
   const { scheduleId } = useParams();
   const user = useAuthUser();
   const [schedule, setSchedule] = useState(null);

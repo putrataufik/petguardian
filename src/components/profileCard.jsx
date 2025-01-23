@@ -13,9 +13,10 @@ const ProfileCard = ({
 }) => {
   // Panggil fungsi logout dari custom hook
   const logout = useLogout();
+  const API_BASE_URL = import.meta.env.VITE_BACKEND_URL;
   // Buat URL gambar hanya jika userData.picture tersedia
   const imageUrl = userData.picture
-    ? `http://localhost:5000/api/images/cache?url=${encodeURIComponent(userData.picture)}`
+    ? `${API_BASE_URL}/images/cache?url=${encodeURIComponent(userData.picture)}`
     : userData.photoURL;
     
   return (
